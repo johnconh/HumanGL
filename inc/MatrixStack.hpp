@@ -2,7 +2,7 @@
 #define MATRIXSTACK_HPP
 
 #include <stack>
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 class MatrixStack {
     private:
@@ -13,6 +13,8 @@ class MatrixStack {
         void pop();
         void loadIdentity();
         void multiply(glm::mat4 matrix);
+        void translate(glm::vec3 translation);
+        void scale(glm::vec3 scale);
         glm::mat4 top() const;
 };
 
