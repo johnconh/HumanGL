@@ -1,17 +1,8 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include "../inc/glm/glm.hpp"
-#include "../inc/glm/gtc/matrix_transform.hpp"
-#include "../inc/glm/gtc/type_ptr.hpp"
-#include "../inc/checkGLError.hpp"
 #include "../inc/Renderer.hpp"
-#include "../inc/Shader.hpp"
 
 const GLuint WIDTH = 1080, HEIGHT = 720;
 GLFWwindow* window = nullptr;
 GLuint cubeVAO, cubeVBO, cubeEBO;
-
 
 const float cubeV[] = {    
     -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -131,42 +122,15 @@ void swapBuffers() {
 }
 
 void cleanupRenderer() {
+    CHECK_GL_ERROR(glDeleteVertexArrays(1, &cubeVAO));
+    CHECK_GL_ERROR(glDeleteBuffers(1, &cubeVBO));
+    CHECK_GL_ERROR(glDeleteBuffers(1, &cubeEBO));
     CHECK_GL_ERROR(glfwDestroyWindow(window));
     CHECK_GL_ERROR(glfwTerminate());
 }
 
 void drawCube() {
     CHECK_GL_ERROR(glBindVertexArray(cubeVAO));
-    CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, 36));
+    CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0));
     CHECK_GL_ERROR(glBindVertexArray(0));
-}
-
-
-void setupCamera(Shader &shader)
-{
-    if (!shader.program) {
-        std::cerr << "Shader program not initialized" << std::endl;
-        exit(1);
-    }
-
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
-    glm::mat4 view = glm::lookAt(
-    glm::vec3(0.0f, 0.0f, 15.0f),
-    glm::vec3(0.0f, 0.0f, 0.0f),
-    glm::vec3(0.0f, 1.0f, 0.0f));
-
-    GLint modelLoc = glGetUniformLocation(shader.program, "model");
-    GLint viewLoc = glGetUniformLocation(shader.program, "view");
-    GLint projectionLoc = glGetUniformLocation(shader.program, "projection");
-
-    if(modelLoc == -1  || viewLoc == -1 || projectionLoc == -1) {
-        std::cerr << "Failed to get uniform location" << std::endl;
-        exit(1); 
-
-    }
-
-    CHECK_GL_ERROR(glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)));
-    CHECK_GL_ERROR(glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view)));
-    CHECK_GL_ERROR(glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection)));
 }

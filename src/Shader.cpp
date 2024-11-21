@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include "../inc/checkGLError.hpp"
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
     std::string vertexCode = readFile(vertexPath);
@@ -72,5 +73,14 @@ void Shader::checkCompileErrors(GLuint shader, std::string type) {
             std::cerr << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
         }
     }
+}
+
+void Shader::setMatrix4(const std::string &name, const glm::mat4 &matrix) const {
+    GLint location = glGetUniformLocation(program, name.c_str());
+    if (location == -1) {
+        std::cerr << "Failed to get uniform location: " << name << std::endl;
+        exit(1);
+    }
+    CHECK_GL_ERROR(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]));
 }
 

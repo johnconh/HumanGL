@@ -2,6 +2,8 @@
 #include "../inc/Renderer.hpp"
 #include "../inc/Model.hpp"
 #include "../inc/MatrixStack.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 int main() {
 
@@ -11,11 +13,15 @@ int main() {
     MatrixStack m;
     Shader shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
     while(!glfwWindowShouldClose(window)) {
-        shader.use();
         clearScreen();
-        setupCamera(shader);
-        humanModel.draw(m);
+        shader.use();
+        shader.setMatrix4("projection", projection);
+        shader.setMatrix4("view", view);
+        humanModel.draw(m, shader);
         swapBuffers();
     }
 
