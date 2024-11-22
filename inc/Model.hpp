@@ -16,5 +16,4 @@ class Model {
         Model();
         void draw(MatrixStack &m, Shader &shader);
 };
-
 #endif

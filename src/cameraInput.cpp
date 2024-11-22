@@ -11,6 +11,10 @@ void processInput(GLFWwindow* window, Camera& camera, float deltaTime) {
         camera.position = camera.position - normalize(cross(camera.up, sub(camera.target, camera.position))) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.position = camera.position + normalize(cross(camera.up, sub(camera.target, camera.position))) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        camera.position.y += cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        camera.position.y -= cameraSpeed;
 }
 
 void processMouse(GLFWwindow* window, Camera& camera) {

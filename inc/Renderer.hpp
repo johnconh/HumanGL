@@ -15,5 +15,4 @@ void clearScreen();
 void swapBuffers();
 void cleanupRenderer();
 void drawCube();
-
 #endif

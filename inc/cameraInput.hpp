@@ -12,11 +12,9 @@ struct Camera{
     float pitch;
     float lastX, lastY;
     bool firstMouse = true;
-
 };
 
 void processInput(GLFWwindow* window, Camera& camera, float deltaTime);
 void processMouse(GLFWwindow* window, Camera& camera);
 Matrix4 updateCamera(Camera& camera);
-
 #endif

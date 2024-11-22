@@ -10,5 +10,4 @@ void checkGLError(const char* statement, const char* file, int line);
     statement; \
     checkGLError(#statement, __FILE__, __LINE__); \
 } while (0)
-
 #endif

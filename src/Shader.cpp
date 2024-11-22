@@ -84,3 +84,11 @@ void Shader::setMatrix4(const std::string &name, const Matrix4 &matrix) const {
     CHECK_GL_ERROR(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix.m[0][0]));
 }
 
+void Shader::setVector3(const std::string &name, const Vector3 &vector) const {
+    GLint location = glGetUniformLocation(program, name.c_str());
+    if (location == -1) {
+        std::cerr << "Failed to get uniform location: " << name << std::endl;
+        exit(1);
+    }
+    CHECK_GL_ERROR(glUniform3f(location, vector.x, vector.y, vector.z));
+}

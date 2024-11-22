@@ -10,7 +10,6 @@
 
 struct Vector3 {
     float x, y, z;
-
     Vector3();
     Vector3(float x, float y, float z);
     Vector3 operator+(const Vector3& v) const;
@@ -20,7 +19,6 @@ struct Vector3 {
 
 struct Matrix4{
     float m[4][4];
-
     Matrix4();
     Matrix4 operator*(const Matrix4& matrix) const;
     void translate(const Vector3& translation);
@@ -46,5 +44,4 @@ float radians(float degrees);
 Vector3 sub(const Vector3& a, const Vector3& b);
 Matrix4 perspective(float fovY, float aspect, float near, float far);
 Matrix4 lookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
-
 #endif

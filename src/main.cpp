@@ -4,7 +4,6 @@
 #include "../inc/MatrixStack.hpp"
 #include "../inc/cameraInput.hpp"
 
-
 int main() {
     initRenderer();
 
