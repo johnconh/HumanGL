@@ -5,6 +5,8 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
+ 
+#define PI 3.14159265359f
 
 struct Vector3 {
     float x, y, z;
@@ -40,6 +42,7 @@ class MatrixStack {
 Vector3 normalize(const Vector3& v);
 Vector3 cross(const Vector3& v, const Vector3& w);
 float dot(const Vector3& a, const Vector3& b);
+float radians(float degrees);
 Vector3 sub(const Vector3& a, const Vector3& b);
 Matrix4 perspective(float fovY, float aspect, float near, float far);
 Matrix4 lookAt(const Vector3& eye, const Vector3& target, const Vector3& up);

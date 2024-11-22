@@ -35,7 +35,7 @@ void Model::drawArm(MatrixStack &m, Shader &shader, bool left) {
     float side = left ? -1.0f : 1.0f;
     // Draw shoulder
     m.push();
-    m.translate(Vector3(side * 2.75, 0.50f, 1.0f));
+    m.translate(Vector3(side * 2.75, 0.50f, 0.0f));
     m.scale(Vector3(0.25f, 1.00f, 0.25f));
     shader.setMatrix4("model", m.top());
     drawCube();

@@ -128,3 +128,7 @@ Matrix4 lookAt(const Vector3& eye, const Vector3& center, const Vector3& up) {
     m.m[3][3] = 1.0f;
     return m;
 }
+
+float radians(float degrees) {
+    return degrees * PI / 180.0f;
+}
