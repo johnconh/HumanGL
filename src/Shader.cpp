@@ -75,12 +75,12 @@ void Shader::checkCompileErrors(GLuint shader, std::string type) {
     }
 }
 
-void Shader::setMatrix4(const std::string &name, const glm::mat4 &matrix) const {
+void Shader::setMatrix4(const std::string &name, const Matrix4 &matrix) const {
     GLint location = glGetUniformLocation(program, name.c_str());
     if (location == -1) {
         std::cerr << "Failed to get uniform location: " << name << std::endl;
         exit(1);
     }
-    CHECK_GL_ERROR(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]));
+    CHECK_GL_ERROR(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix.m[0][0]));
 }
 

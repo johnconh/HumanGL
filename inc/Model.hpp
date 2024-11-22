@@ -5,8 +5,6 @@
 #include "MatrixStack.hpp"
 #include "checkGLError.hpp"
 #include "Renderer.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 class Model {
     private:
