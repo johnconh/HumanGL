@@ -1,4 +1,5 @@
 #include "../inc/MatrixStack.hpp"
+#include "MatrixStack.hpp"
 
 Vector3::Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 
@@ -71,6 +72,20 @@ void Matrix4::scale(const Vector3& s) {
     *this = *this * scaleMatrix;
 }
 
+void Matrix4::rotateX(float angle) {
+    float c = std::cos(angle);
+    float s = std::sin(angle);
+    Matrix4 rotation;
+    memset(rotation.m, 0, sizeof(rotation.m));
+    rotation.m[0][0] = 1.0f;
+    rotation.m[1][1] = c;
+    rotation.m[1][2] = -s;
+    rotation.m[2][1] = s;
+    rotation.m[2][2] = c;
+    rotation.m[3][3] = 1.0f;
+    *this = *this * rotation;
+}
+
 MatrixStack::MatrixStack() {
     stack.push_back(Matrix4());
 }
@@ -93,6 +108,14 @@ void MatrixStack::translate(const Vector3& translation) {
 
 void MatrixStack::scale(const Vector3& scale) {
     top().scale(scale);
+}
+
+void MatrixStack::multiply(const Matrix4 &matrix){
+    top() = top() * matrix;
+}
+
+void MatrixStack::rotateX(float angle){
+    top().rotateX(angle);
 }
 
 Matrix4 perspective(float fovY, float aspect, float near, float far) {

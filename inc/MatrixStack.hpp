@@ -5,7 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
- 
+
 #define PI 3.14159265359f
 
 struct Vector3 {
@@ -23,6 +23,7 @@ struct Matrix4{
     Matrix4 operator*(const Matrix4& matrix) const;
     void translate(const Vector3& translation);
     void scale(const Vector3& scale);
+    void rotateX(float angle);
 };
 
 class MatrixStack {
@@ -35,6 +36,8 @@ class MatrixStack {
         Matrix4& top();
         void translate(const Vector3& translation);
         void scale(const Vector3& scale);
+        void multiply(const Matrix4& matrix);
+        void rotateX(float angle);
 };
 
 Vector3 normalize(const Vector3& v);

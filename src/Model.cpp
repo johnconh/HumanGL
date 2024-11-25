@@ -1,6 +1,18 @@
 #include "../inc/Model.hpp"
 
-Model::Model() {}
+Model::Model(): elapsedTime(0.0f), currentAnimation(nullptr){
+    torsoMatrix = Matrix4();
+    headMatrix = Matrix4();
+    leftUpperArmMatrix = Matrix4();
+    leftLowerArmMatrix = Matrix4();
+    rightUpperArmMatrix = Matrix4();
+    rightLowerArmMatrix = Matrix4();
+    leftUpperLegMatrix = Matrix4();
+    leftLowerLegMatrix = Matrix4();
+    rightUpperLegMatrix = Matrix4();
+    rightLowerLegMatrix = Matrix4();
+    setAnimation([this]() { animateWalk(); });
+}
 
 void Model::draw(MatrixStack &m, Shader &shader) {
     m.push();
@@ -71,3 +83,38 @@ void Model::drawLeg(MatrixStack &m, Shader &shader, bool left) {
     m.pop();
 }
 
+void Model::setAnimation(std::function<void()> animation) {
+    currentAnimation = animation;
+    elapsedTime = 0.0f;
+}
+
+void Model::update(float deltaTime) {
+    elapsedTime += deltaTime;
+    if (currentAnimation != nullptr) {
+        currentAnimation();
+    }
+}
+
+void Model::animateWalk() {
+    float walkCycle = std::sin(elapsedTime * 3.14159f * 2.0f);
+
+    float upperLegAngle = walkCycle * 30.0f;
+    leftUpperLegMatrix.rotateX(radians(upperLegAngle));
+    rightUpperLegMatrix.rotateX(radians(-upperLegAngle));
+
+    float lowerLegAngle = walkCycle * 50.0f;
+    leftLowerLegMatrix.rotateX(radians(lowerLegAngle));
+    rightLowerLegMatrix.rotateX(radians(-lowerLegAngle));
+
+    float upperArmAngle = -walkCycle * 20.0f;
+    leftUpperArmMatrix.rotateX(radians(upperArmAngle));
+    rightUpperArmMatrix.rotateX(radians(-upperArmAngle));
+
+    float lowerArmAngle = walkCycle * 25.0f;
+    leftLowerArmMatrix.rotateX(radians(lowerArmAngle));
+    rightLowerArmMatrix.rotateX(radians(-lowerArmAngle));
+
+    float fowardSpeed = 0.5f;
+    float fowardTranslation = elapsedTime * fowardSpeed;
+    torsoMatrix.translate(Vector3(0.0f, 0.0f, fowardTranslation));
+}
