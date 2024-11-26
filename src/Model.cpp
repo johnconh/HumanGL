@@ -16,6 +16,7 @@ Model::Model(): elapsedTime(0.0f), currentAnimation(nullptr){
 
 void Model::draw(MatrixStack &m, Shader &shader) {
     m.push();
+    m.multiply(torsoMatrix);
     drawTorso(m, shader);
     drawHead(m, shader);
     drawArm(m, shader, true);
@@ -49,18 +50,27 @@ void Model::drawArm(MatrixStack &m, Shader &shader, bool left) {
     float side = left ? -1.0f : 1.0f;
     // Draw shoulder
     m.push();
+    if(left){
+        m.multiply(leftUpperArmMatrix);
+    }else{
+        m.multiply(rightUpperArmMatrix);
+    };
     m.translate(Vector3(side * 2.50, 0.5f, 0.0f));
     m.scale(Vector3(0.25f, 1.00f, 0.25f));
     shader.setVector3("objectColor", Vector3(255.0f / 255.0f, 224.0f / 255.0f, 185.0f / 255.0f));
     shader.setMatrix4("model", m.top());
     drawCube();
-    // Draw hand
+    m.pop();
     m.push();
-    m.translate(Vector3(0.0f, -1.00f, 0.0f));
-    m.scale(Vector3(1.0f, 1.0f, 1.0f));
+    if(left){
+        m.multiply(leftLowerArmMatrix);
+    }else{
+        m.multiply(rightLowerArmMatrix);
+    };
+    m.translate(Vector3(side * 2.50f, -0.25f, 0.0f));
+    m.scale(Vector3(0.25f, 1.0f, 0.25f));
     shader.setMatrix4("model", m.top());
     drawCube();
-    m.pop();
     m.pop();
 }
 
@@ -68,13 +78,22 @@ void Model::drawLeg(MatrixStack &m, Shader &shader, bool left) {
     float side = left ? -0.5f : 0.5f;
     // Draw hip
     m.push();
+    if (left){
+        m.multiply(leftUpperLegMatrix);
+    }else{
+        m.multiply(rightUpperLegMatrix);
+    }
     m.translate(Vector3(side, -1.50, 0.0f));
     m.scale(Vector3(0.5f, 1.0f, 0.5f));
     shader.setVector3("objectColor", Vector3(38.0f / 255.0f, 57.0f / 255.0f, 75.0f / 255.0f));
     shader.setMatrix4("model", m.top());
     drawCube();
-    // Draw foot
     m.push();
+    if(left){
+        m.multiply(leftLowerLegMatrix);
+    }else{
+        m.multiply(rightLowerLegMatrix);
+    }
     m.translate(Vector3(0.0f, -1.00f, 0.0f));
     m.scale(Vector3(1.0f, 1.0f, 1.0f));
     shader.setMatrix4("model", m.top());
@@ -96,25 +115,51 @@ void Model::update(float deltaTime) {
 }
 
 void Model::animateWalk() {
-    float walkCycle = std::sin(elapsedTime * 3.14159f * 2.0f);
-
+    MatrixStack m;
+    m.push();
+    float walkCycle = std::sin(elapsedTime * 3.14159f);
+    
     float upperLegAngle = walkCycle * 30.0f;
-    leftUpperLegMatrix.rotateX(radians(upperLegAngle));
-    rightUpperLegMatrix.rotateX(radians(-upperLegAngle));
+    float lowerLegAngle = std::abs(walkCycle) * 20.0f;
+    float upperArmAngle = -walkCycle * 15.0f;
+    float lowerArmAngleY = std::abs(walkCycle) * 0.1f;
+    float lowerArmAngleZ = std::abs(walkCycle) * 0.5f;
+    float lowerArmAngleX = std::abs(walkCycle) * 10.5f;
 
-    float lowerLegAngle = walkCycle * 50.0f;
-    leftLowerLegMatrix.rotateX(radians(lowerLegAngle));
-    rightLowerLegMatrix.rotateX(radians(-lowerLegAngle));
+    m.push();
+    m.rotateX(radians(upperLegAngle));
+    leftUpperLegMatrix = m.top();
+    m.pop();
+    m.push();
+    m.rotateX(radians(-lowerLegAngle));
+    leftLowerLegMatrix = m.top();
+    m.pop();
 
-    float upperArmAngle = -walkCycle * 20.0f;
-    leftUpperArmMatrix.rotateX(radians(upperArmAngle));
-    rightUpperArmMatrix.rotateX(radians(-upperArmAngle));
+    m.push();
+    m.rotateX(radians(-upperLegAngle));
+    rightUpperLegMatrix = m.top();
+    m.push();
+    m.rotateX(radians(lowerLegAngle));
+    rightLowerLegMatrix = m.top();
+    m.pop();
+    m.pop();
 
-    float lowerArmAngle = walkCycle * 25.0f;
-    leftLowerArmMatrix.rotateX(radians(lowerArmAngle));
-    rightLowerArmMatrix.rotateX(radians(-lowerArmAngle));
+    m.push();
+    m.rotateX(radians(upperArmAngle));
+    leftUpperArmMatrix = m.top();
+    m.push();
+    m.rotateX(radians(-upperArmAngle));
+    m.translate(Vector3(0.0, lowerArmAngleY, lowerArmAngleZ));
+    leftLowerArmMatrix = m.top();
+    m.pop();
+    m.pop();
 
-    float fowardSpeed = 0.5f;
-    float fowardTranslation = elapsedTime * fowardSpeed;
-    torsoMatrix.translate(Vector3(0.0f, 0.0f, fowardTranslation));
+    m.push();
+    m.rotateX(radians(-upperArmAngle));
+    rightUpperArmMatrix = m.top();
+    m.pop();
+    m.push();
+    m.rotateX(radians(lowerArmAngleX));
+    rightLowerArmMatrix = m.top();
+    m.pop();
 }

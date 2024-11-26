@@ -24,6 +24,8 @@ struct Matrix4{
     void translate(const Vector3& translation);
     void scale(const Vector3& scale);
     void rotateX(float angle);
+    void rotateY(float angle);
+    void rotateZ(float angle);
 };
 
 class MatrixStack {
@@ -38,6 +40,8 @@ class MatrixStack {
         void scale(const Vector3& scale);
         void multiply(const Matrix4& matrix);
         void rotateX(float angle);
+        void rotateY(float angle);
+        void rotateZ(float angle);
 };
 
 Vector3 normalize(const Vector3& v);

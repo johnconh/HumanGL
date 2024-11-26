@@ -21,6 +21,7 @@ int main() {
         float deltaTime = currentframe - lastframe;
         lastframe = currentframe;
         
+        humanModel.update(deltaTime);
         processInput(window, camera, deltaTime);
         //processMouse(window, camera);
 

@@ -86,12 +86,40 @@ void Matrix4::rotateX(float angle) {
     *this = *this * rotation;
 }
 
+void Matrix4::rotateY(float angle) {
+    float c = std::cos(angle);
+    float s = std::sin(angle);
+    Matrix4 rotation;
+    memset(rotation.m, 0, sizeof(rotation.m));
+    rotation.m[0][0] = c;
+    rotation.m[0][2] = s;
+    rotation.m[1][1] = 1.0f;
+    rotation.m[2][0] = -s;
+    rotation.m[2][2] = c;
+    rotation.m[3][3] = 1.0f;
+    *this = *this * rotation;
+}
+
+void Matrix4::rotateZ(float angle) {
+    float c = std::cos(angle);
+    float s = std::sin(angle);
+    Matrix4 rotation;
+    memset(rotation.m, 0, sizeof(rotation.m));
+    rotation.m[0][0] = c;
+    rotation.m[0][1] = -s;
+    rotation.m[1][0] = s;
+    rotation.m[1][1] = c;
+    rotation.m[2][2] = 1.0f;
+    rotation.m[3][3] = 1.0f;
+    *this = *this * rotation;
+}
+
 MatrixStack::MatrixStack() {
     stack.push_back(Matrix4());
 }
 
 void MatrixStack::push() {
-    stack.push_back(stack.back());
+    stack.push_back(top());
 }
 
 void MatrixStack::pop() {
@@ -116,6 +144,14 @@ void MatrixStack::multiply(const Matrix4 &matrix){
 
 void MatrixStack::rotateX(float angle){
     top().rotateX(angle);
+}
+
+void MatrixStack::rotateY(float angle){
+    top().rotateY(angle);
+}
+
+void MatrixStack::rotateZ(float angle){
+    top().rotateZ(angle);
 }
 
 Matrix4 perspective(float fovY, float aspect, float near, float far) {
