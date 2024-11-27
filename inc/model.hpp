@@ -1,30 +1,22 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include "Shader.hpp" 
-#include "MatrixStack.hpp"
-#include "Renderer.hpp"
+#include "bone.hpp"
+#include "shader.hpp" 
+#include "matrixStack.hpp"
+#include "renderer.hpp"
 #include <functional>
 #include <cmath>
 
 class Model {
     private:
-        Matrix4 torsoMatrix;
-        Matrix4 headMatrix;
-        Matrix4 leftUpperArmMatrix;
-        Matrix4 leftLowerArmMatrix;
-        Matrix4 rightUpperArmMatrix;
-        Matrix4 rightLowerArmMatrix;
-        Matrix4 leftUpperLegMatrix;
-        Matrix4 leftLowerLegMatrix;
-        Matrix4 rightUpperLegMatrix;
-        Matrix4 rightLowerLegMatrix;
+        std::vector<Bone> bones;
+        std::function<void()> currentAnimation;
         void drawTorso(MatrixStack &m, Shader &shader);
         void drawHead(MatrixStack &m, Shader &shader);
         void drawArm(MatrixStack &m, Shader &shader ,bool left);
         void drawLeg(MatrixStack &m, Shader &shader ,bool left);
         float elapsedTime;
-        std::function<void()> currentAnimation;
 
     public:
         Model();
@@ -32,5 +24,7 @@ class Model {
         void setAnimation(std::function<void()> animation);
         void update(float deltaTime);
         void animateWalk();
+        void updateBoneTransforms();
+        void applyBoneTransforms(MatrixStack& m);
 };
 #endif

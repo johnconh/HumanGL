@@ -1,7 +1,7 @@
-#include "../inc/Shader.hpp"
-#include "../inc/Renderer.hpp"
-#include "../inc/Model.hpp"
-#include "../inc/MatrixStack.hpp"
+#include "../inc/shader.hpp"
+#include "../inc/renderer.hpp"
+#include "../inc/model.hpp"
+#include "../inc/matrixStack.hpp"
 #include "../inc/cameraInput.hpp"
 
 int main() {
@@ -22,6 +22,8 @@ int main() {
         lastframe = currentframe;
         
         humanModel.update(deltaTime);
+        humanModel.updateBoneTransforms();
+        //humanModel.applyBoneTransforms(m);
         processInput(window, camera, deltaTime);
         //processMouse(window, camera);
 

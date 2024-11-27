@@ -1,22 +1,75 @@
-#include "../inc/Model.hpp"
+#include "../inc/model.hpp"
 
-Model::Model(): elapsedTime(0.0f), currentAnimation(nullptr){
-    torsoMatrix = Matrix4();
-    headMatrix = Matrix4();
-    leftUpperArmMatrix = Matrix4();
-    leftLowerArmMatrix = Matrix4();
-    rightUpperArmMatrix = Matrix4();
-    rightLowerArmMatrix = Matrix4();
-    leftUpperLegMatrix = Matrix4();
-    leftLowerLegMatrix = Matrix4();
-    rightUpperLegMatrix = Matrix4();
-    rightLowerLegMatrix = Matrix4();
-    setAnimation([this]() { animateWalk(); });
+Model::Model(){
+
+    Bone torso;
+    bones.push_back(torso);
+
+    Bone head;
+    head.setParent(torso);
+    bones.push_back(head);
+
+    Bone leftUpperArm;
+    leftUpperArm.setParent(torso);
+    bones.push_back(leftUpperArm);
+
+    Bone leftLowerArm;
+    leftLowerArm.setParent(leftUpperArm);
+    bones.push_back(leftLowerArm);
+
+    Bone rightUpperArm;
+    rightUpperArm.setParent(torso);
+    bones.push_back(rightUpperArm);
+
+    Bone rightLowerArm;
+    rightLowerArm.setParent(rightUpperArm);
+    bones.push_back(rightLowerArm);
+
+    Bone leftUpperLeg;
+    leftUpperLeg.setParent(torso);
+    bones.push_back(leftUpperLeg);
+
+    Bone leftLowerLeg;
+    leftLowerLeg.setParent(leftUpperLeg);
+    bones.push_back(leftLowerLeg);
+
+    Bone rightUpperLeg;
+    rightUpperLeg.setParent(torso);
+    bones.push_back(rightUpperLeg);
+
+    Bone rightLowerLeg;
+    rightLowerLeg.setParent(rightUpperLeg);
+    bones.push_back(rightLowerLeg);
+
+    torso.addChild(head);
+    torso.addChild(leftUpperArm);
+    torso.addChild(rightUpperArm);
+    torso.addChild(leftUpperLeg);
+    torso.addChild(rightUpperLeg);
+
+    leftUpperArm.addChild(leftLowerArm);
+    rightUpperArm.addChild(rightLowerArm);
+    leftUpperLeg.addChild(leftLowerLeg);
+    rightUpperLeg.addChild(rightLowerLeg);
+    //setAnimation([this]() { animateWalk(); });
+}
+
+void Model::updateBoneTransforms() {
+    for(Bone& bone : bones) {
+        bone.update();
+    }
+}
+
+void Model::applyBoneTransforms(MatrixStack& m) {
+    for(Bone& bone : bones) {
+        bone.applyTransform(m);
+    }
 }
 
 void Model::draw(MatrixStack &m, Shader &shader) {
     m.push();
-    m.multiply(torsoMatrix);
+    Vector3 translation (bones[0].getGlobalTransform().m[3][0], bones[0].getGlobalTransform().m[3][1], bones[0].getGlobalTransform().m[3][2]);
+    m.translate(translation);
     drawTorso(m, shader);
     drawHead(m, shader);
     drawArm(m, shader, true);
@@ -48,52 +101,30 @@ void Model::drawHead(MatrixStack &m, Shader &shader) {
 
 void Model::drawArm(MatrixStack &m, Shader &shader, bool left) {
     float side = left ? -1.0f : 1.0f;
-    // Draw shoulder
     m.push();
-    if(left){
-        m.multiply(leftUpperArmMatrix);
-    }else{
-        m.multiply(rightUpperArmMatrix);
-    };
     m.translate(Vector3(side * 2.50, 0.5f, 0.0f));
     m.scale(Vector3(0.25f, 1.00f, 0.25f));
     shader.setVector3("objectColor", Vector3(255.0f / 255.0f, 224.0f / 255.0f, 185.0f / 255.0f));
     shader.setMatrix4("model", m.top());
     drawCube();
-    m.pop();
     m.push();
-    if(left){
-        m.multiply(leftLowerArmMatrix);
-    }else{
-        m.multiply(rightLowerArmMatrix);
-    };
-    m.translate(Vector3(side * 2.50f, -0.25f, 0.0f));
-    m.scale(Vector3(0.25f, 1.0f, 0.25f));
+    m.translate(Vector3(0.0f, -1.00f, 0.0f));
+    m.scale(Vector3(1.00f, 1.25f, 1.00f));
     shader.setMatrix4("model", m.top());
     drawCube();
+    m.pop();
     m.pop();
 }
 
 void Model::drawLeg(MatrixStack &m, Shader &shader, bool left) {
     float side = left ? -0.5f : 0.5f;
-    // Draw hip
     m.push();
-    if (left){
-        m.multiply(leftUpperLegMatrix);
-    }else{
-        m.multiply(rightUpperLegMatrix);
-    }
     m.translate(Vector3(side, -1.50, 0.0f));
     m.scale(Vector3(0.5f, 1.0f, 0.5f));
     shader.setVector3("objectColor", Vector3(38.0f / 255.0f, 57.0f / 255.0f, 75.0f / 255.0f));
     shader.setMatrix4("model", m.top());
     drawCube();
     m.push();
-    if(left){
-        m.multiply(leftLowerLegMatrix);
-    }else{
-        m.multiply(rightLowerLegMatrix);
-    }
     m.translate(Vector3(0.0f, -1.00f, 0.0f));
     m.scale(Vector3(1.0f, 1.0f, 1.0f));
     shader.setMatrix4("model", m.top());
@@ -115,51 +146,4 @@ void Model::update(float deltaTime) {
 }
 
 void Model::animateWalk() {
-    MatrixStack m;
-    m.push();
-    float walkCycle = std::sin(elapsedTime * 3.14159f);
-    
-    float upperLegAngle = walkCycle * 30.0f;
-    float lowerLegAngle = std::abs(walkCycle) * 20.0f;
-    float upperArmAngle = -walkCycle * 15.0f;
-    float lowerArmAngleY = std::abs(walkCycle) * 0.1f;
-    float lowerArmAngleZ = std::abs(walkCycle) * 0.5f;
-    float lowerArmAngleX = std::abs(walkCycle) * 10.5f;
-
-    m.push();
-    m.rotateX(radians(upperLegAngle));
-    leftUpperLegMatrix = m.top();
-    m.pop();
-    m.push();
-    m.rotateX(radians(-lowerLegAngle));
-    leftLowerLegMatrix = m.top();
-    m.pop();
-
-    m.push();
-    m.rotateX(radians(-upperLegAngle));
-    rightUpperLegMatrix = m.top();
-    m.push();
-    m.rotateX(radians(lowerLegAngle));
-    rightLowerLegMatrix = m.top();
-    m.pop();
-    m.pop();
-
-    m.push();
-    m.rotateX(radians(upperArmAngle));
-    leftUpperArmMatrix = m.top();
-    m.push();
-    m.rotateX(radians(-upperArmAngle));
-    m.translate(Vector3(0.0, lowerArmAngleY, lowerArmAngleZ));
-    leftLowerArmMatrix = m.top();
-    m.pop();
-    m.pop();
-
-    m.push();
-    m.rotateX(radians(-upperArmAngle));
-    rightUpperArmMatrix = m.top();
-    m.pop();
-    m.push();
-    m.rotateX(radians(lowerArmAngleX));
-    rightLowerArmMatrix = m.top();
-    m.pop();
 }

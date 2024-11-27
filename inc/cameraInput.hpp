@@ -2,7 +2,7 @@
 #define CAMERA_INPUT_HPP
 
 #include <GLFW/glfw3.h>
-#include "MatrixStack.hpp"
+#include "matrixStack.hpp"
 
 struct Camera{
     Vector3 position = Vector3(0.0f, 0.0f, 5.0f);

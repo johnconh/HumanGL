@@ -1,5 +1,4 @@
-#include "../inc/MatrixStack.hpp"
-#include "MatrixStack.hpp"
+#include "../inc/matrixStack.hpp"
 
 Vector3::Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 
@@ -186,6 +185,10 @@ Matrix4 lookAt(const Vector3& eye, const Vector3& center, const Vector3& up) {
     m.m[3][2] = dot(f, eye);
     m.m[3][3] = 1.0f;
     return m;
+}
+
+void MatrixStack::applyMatrix(const Matrix4& matrix) {
+    top() = matrix;
 }
 
 float radians(float degrees) {

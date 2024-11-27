@@ -3,7 +3,7 @@
 
 #include <GL/glew.h>
 #include <string>
-#include "MatrixStack.hpp"
+#include "matrixStack.hpp"
 
 class Shader {
     public:

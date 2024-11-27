@@ -42,6 +42,7 @@ class MatrixStack {
         void rotateX(float angle);
         void rotateY(float angle);
         void rotateZ(float angle);
+        void applyMatrix(const Matrix4& matrix);
 };
 
 Vector3 normalize(const Vector3& v);

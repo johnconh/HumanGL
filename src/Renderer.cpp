@@ -1,4 +1,4 @@
-#include "../inc/Renderer.hpp"
+#include "../inc/renderer.hpp"
 
 const GLuint WIDTH = 1080, HEIGHT = 720;
 GLFWwindow* window = nullptr;
