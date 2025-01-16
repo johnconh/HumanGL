@@ -8,9 +8,11 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
     setupMesh();
 }
 
-void Mesh::draw(Shader &shader) {
+void Mesh::Draw(Shader &shader) {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
+    unsigned int normalNr = 1;
+    unsigned int heightNr = 1;
     for (unsigned int i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i);
         string number;
@@ -19,15 +21,20 @@ void Mesh::draw(Shader &shader) {
             number = to_string(diffuseNr++);
         } else if (name == "texture_specular") {
             number = to_string(specularNr++);
+        } else if (name == "texture_normal") {
+            number = to_string(normalNr++);
+        } else if (name == "texture_height") {
+            number = to_string(heightNr++);
         }
-        shader.setInt(("material." + name + number).c_str(), i);
+        glUniform1i(glGetUniformLocation(shader.id, (name + number).c_str()), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
-    glActiveTexture(GL_TEXTURE0);
     // draw mesh
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+
+    glActiveTexture(GL_TEXTURE0);
 
 }
 
