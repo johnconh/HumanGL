@@ -2,8 +2,11 @@
 #define MESH_HPP
 
 #include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "shader.hpp"
 #include <vector>
 
+using namespace std;
 
 struct Vertex
 {
@@ -15,13 +18,25 @@ struct Vertex
 struct Texture
 {
     unsigned int id;
-    std::string type;
-}
+    string type;
+    string path;
+};
 
 class Mesh
 {
     public:
+        // mesh data
+        vector<Vertex> vertices;
+        vector<unsigned int> indices;
+        vector<Texture> textures;
 
-}
+        Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
+        void draw(Shader &shader);
+
+    private:
+        // render data
+        unsigned int VAO, VBO, EBO;
+        void setupMesh();
+};
 
 #endif

@@ -9,6 +9,7 @@
 
 extern const GLuint WIDTH, HEIGHT;
 extern GLFWwindow* window;
+using namespace std;
 
 void initRenderer();
 void clearScreen();

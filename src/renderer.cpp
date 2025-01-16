@@ -5,7 +5,7 @@ GLFWwindow* window = nullptr;
 
 void initRenderer() {
     if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
+        cerr << "Failed to initialize GLFW" << endl;
         exit(1);
     }
 
@@ -13,7 +13,7 @@ void initRenderer() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL Tutorial", NULL, NULL);
     if (!window) {
-        std::cerr << "Failed to create window" << std::endl;
+        cerr << "Failed to create window" << endl;
         glfwTerminate();
         exit(1);
     }
@@ -21,7 +21,7 @@ void initRenderer() {
     glfwMakeContextCurrent(window);
 
     if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW" << std::endl;
+        cerr << "Failed to initialize GLEW" << endl;
         exit(1);
     }
     const GLubyte* version = glGetString(GL_VERSION);
@@ -29,11 +29,11 @@ void initRenderer() {
     const GLubyte* vendor = glGetString(GL_VENDOR);
 
     if (version) {
-        std::cout << "OpenGL version: " << version << std::endl;
-        std::cout << "Renderer: " << renderer << std::endl;
-        std::cout << "Vendor: " << vendor << std::endl;
+        cout << "OpenGL version: " << version << endl;
+        cout << "Renderer: " << renderer << endl;
+        cout << "Vendor: " << vendor << endl;
     } else {
-        std::cerr << "Error getting OpenGL version" << std::endl;
+        cerr << "Error getting OpenGL version" << endl;
     }
 
 }
