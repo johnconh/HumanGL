@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "checkGLError.hpp"
-#include "shader.hpp"
+
 
 extern const GLuint WIDTH, HEIGHT;
 extern GLFWwindow* window;
@@ -14,5 +14,5 @@ void initRenderer();
 void clearScreen();
 void swapBuffers();
 void cleanupRenderer();
-void drawCube();
+
 #endif

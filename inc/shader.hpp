@@ -3,17 +3,17 @@
 
 #include <GL/glew.h>
 #include <string>
-#include "matrixStack.hpp"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 class Shader {
     public:
-        GLuint program;
-        Shader(const std::string& vertexPath, const std::string& fragmentPath);
-        void setMatrix4(const std::string &name, const Matrix4 &matrix) const;
-        void setVector3(const std::string &name, const Vector3 &vector) const;
+        unsigned int id;
+        Shader (const char* vertexPath, const char* fragmentPath);
         void use();
-    private:
-        std::string readFile(const std::string& filePath);
-        void checkCompileErrors(GLuint shader, std::string type);
+        void setBool(const std::string &name, bool value) const;
+        void setInt(const std::string &name, int value) const;
+        void setFloat(const std::string &name, float value) const;
 };
 #endif
