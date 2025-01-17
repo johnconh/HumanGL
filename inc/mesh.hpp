@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define MAX_BONES 4
+#define MAX_BONES_INFLUENCE 4
 
 struct Vertex
 {
@@ -17,8 +17,8 @@ struct Vertex
     glm::vec2 texcoord;
     glm::vec3 tangent;
     glm::vec3 bitangent;
-    int boneIDs[MAX_BONES];
-    float weights[MAX_BONES];
+    int boneIDs[MAX_BONES_INFLUENCE];
+    float weights[MAX_BONES_INFLUENCE];
 };
 
 struct Texture
