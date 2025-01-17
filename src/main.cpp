@@ -53,7 +53,7 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/object/backpack/backpack.obj");
+    Model ourModel("resources/objects/backpack/backpack.obj");
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
