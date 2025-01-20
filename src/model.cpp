@@ -70,22 +70,20 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
             vertex.texcoord = vec;
-            //tanget
-            vector.x = mesh->mTangents[i].x;
-            vector.y = mesh->mTangents[i].y;
-            vector.z = mesh->mTangents[i].z;
-            vertex.tangent = vector;
-            //bitangent
-            vector.x = mesh->mBitangents[i].x;
-            vector.y = mesh->mBitangents[i].y;
-            vector.z = mesh->mBitangents[i].z;
-            vertex.bitangent = vector;
+            // //tanget
+            // vector.x = mesh->mTangents[i].x;
+            // vector.y = mesh->mTangents[i].y;
+            // vector.z = mesh->mTangents[i].z;
+            // vertex.tangent = vector;
+            // //bitangent
+            // vector.x = mesh->mBitangents[i].x;
+            // vector.y = mesh->mBitangents[i].y;
+            // vector.z = mesh->mBitangents[i].z;
+            // vertex.bitangent = vector;
         }
         else
-        {
             vertex.texcoord = glm::vec2(0.0f, 0.0f);
-        }
-
+    
         vertices.push_back(vertex);
     }
 
@@ -105,12 +103,12 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     // 2. specular maps
     vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    // 3. normal maps
-    vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-    // 4. height maps
-    vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+    // // 3. normal maps
+    // vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    // textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+    // // 4. height maps
+    // vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    // textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
     return Mesh(vertices, indices, textures);
 }

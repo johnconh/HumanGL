@@ -15,10 +15,10 @@ struct Vertex
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texcoord;
-    glm::vec3 tangent;
-    glm::vec3 bitangent;
-    int boneIDs[MAX_BONES_INFLUENCE];
-    float weights[MAX_BONES_INFLUENCE];
+    // glm::vec3 tangent;
+    // glm::vec3 bitangent;
+    // int boneIDs[MAX_BONES_INFLUENCE];
+    // float weights[MAX_BONES_INFLUENCE];
 };
 
 struct Texture

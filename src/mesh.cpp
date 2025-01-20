@@ -11,8 +11,8 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
 void Mesh::Draw(Shader &shader) {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
-    unsigned int normalNr = 1;
-    unsigned int heightNr = 1;
+    // unsigned int normalNr = 1;
+    // unsigned int heightNr = 1;
     for (unsigned int i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i);
         string number;
@@ -21,11 +21,11 @@ void Mesh::Draw(Shader &shader) {
             number = to_string(diffuseNr++);
         } else if (name == "texture_specular") {
             number = to_string(specularNr++);
-        } else if (name == "texture_normal") {
-            number = to_string(normalNr++);
-        } else if (name == "texture_height") {
-            number = to_string(heightNr++);
-        }
+        } //else if (name == "texture_normal") {
+        //     number = to_string(normalNr++);
+        // } else if (name == "texture_height") {
+        //     number = to_string(heightNr++);
+        // }
         glUniform1i(glGetUniformLocation(shader.id, (name + number).c_str()), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
@@ -59,18 +59,18 @@ void Mesh::setupMesh() {
     // vertex texture coords
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texcoord));
-    // vertex tangent
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
-    // vertex bitangent
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
-    // bone IDs
-    glEnableVertexAttribArray(5);
-    glVertexAttribIPointer(5, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, boneIDs));
-    // bone weights
-    glEnableVertexAttribArray(6);
-    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, weights));
+    // // vertex tangent
+    // glEnableVertexAttribArray(3);
+    // glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+    // // vertex bitangent
+    // glEnableVertexAttribArray(4);
+    // glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
+    // // bone IDs
+    // glEnableVertexAttribArray(5);
+    // glVertexAttribIPointer(5, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, boneIDs));
+    // // bone weights
+    // glEnableVertexAttribArray(6);
+    // glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, weights));
     
 
     glBindVertexArray(0);
