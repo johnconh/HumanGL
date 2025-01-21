@@ -1,5 +1,4 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#pragma once
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -41,5 +40,3 @@ class Camera
     private:
         void updateCameraVectors();
 };
-
-#endif

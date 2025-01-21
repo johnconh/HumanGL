@@ -1,5 +1,4 @@
-#ifndef MESH_HPP
-#define MESH_HPP
+#pragma once
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -44,5 +43,3 @@ class Mesh
         unsigned int VAO, VBO, EBO;
         void setupMesh();
 };
-
-#endif

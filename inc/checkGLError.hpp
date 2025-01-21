@@ -1,5 +1,4 @@
-#ifndef CHECKGLERROR_HPP
-#define CHECKGLERROR_HPP
+#pragma once
 
 #include <GL/glew.h>
 #include <iostream>
@@ -10,4 +9,3 @@ void checkGLError(const char* statement, const char* file, int line);
     statement; \
     checkGLError(#statement, __FILE__, __LINE__); \
 } while (0)
-#endif

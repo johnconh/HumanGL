@@ -50,19 +50,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
-        glm::vec3 vector;
-        vector.x = mesh->mVertices[i].x;
-        vector.y = mesh->mVertices[i].y;
-        vector.z = mesh->mVertices[i].z;
-        vertex.position = vector;
-
-        if(mesh->HasNormals())
-        {
-            vector.x = mesh->mNormals[i].x;
-            vector.y = mesh->mNormals[i].y;
-            vector.z = mesh->mNormals[i].z;
-            vertex.normal = vector;
-        }
+        SetVertexBoneDataToDefault(vertex);
+        vertex.position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
+        vertex.normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
 
         if (mesh->mTextureCoords[0])
         {
@@ -70,20 +60,10 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
             vertex.texcoord = vec;
-            //tanget
-            vector.x = mesh->mTangents[i].x;
-            vector.y = mesh->mTangents[i].y;
-            vector.z = mesh->mTangents[i].z;
-            vertex.tangent = vector;
-            //bitangent
-            vector.x = mesh->mBitangents[i].x;
-            vector.y = mesh->mBitangents[i].y;
-            vector.z = mesh->mBitangents[i].z;
-            vertex.bitangent = vector;
         }
         else
             vertex.texcoord = glm::vec2(0.0f, 0.0f);
-    
+
         vertices.push_back(vertex);
     }
 
@@ -97,18 +77,17 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     }
 
     aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-    // 1. diffuse maps
+ 
     vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    // 2. specular maps
     vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    // 3. normal maps
     vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
     textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-    // 4. height maps
     vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+    ExtractBoneWeightForVertices(vertices, mesh, scene);
 
     return Mesh(vertices, indices, textures);
 }
@@ -181,4 +160,72 @@ unsigned int TextureFromFile(const char *path, const string &directory)
     }
 
     return textureID;
+}
+
+auto& Model::GetBoneInfoMap()
+{
+    return m_BoneInfoMap;
+}
+
+int& Model::GetBoneCounter()
+{
+    return m_BoneCounter;
+}
+
+void Model::SetVertexBoneDataToDefault(Vertex& vertex)
+{
+    for (int i = 0; i < MAX_BONES_INFLUENCE; i++)
+    {
+        vertex.boneIDs[i] = -1;
+        vertex.weights[i] = 0.0f;
+    }
+}
+
+void Model::SetVertexBoneData(Vertex& vertex, int BoneID, float Weight)
+{
+    for (int i = 0; i < MAX_BONES_INFLUENCE; ++i)
+    {
+        if (vertex.weights[i] < 0.0)
+        {
+            vertex.boneIDs[i] = BoneID;
+            vertex.weights[i] = Weight;
+            break;
+        }
+    }
+}
+
+void Model::ExtractBoneWeightForVertices(vector<Vertex>& vertices, aiMesh *mesh, const aiScene *scene)
+{ 
+    (void)scene;
+    auto& boneInfoMap = GetBoneInfoMap();
+    auto& boneCounter = GetBoneCounter();
+
+    for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+    {
+        int BoneID = -1;
+        string BoneName = mesh->mBones[boneIndex]->mName.C_Str();
+        if (boneInfoMap.find(BoneName) == boneInfoMap.end())
+        {
+            BoneID = boneCounter;
+            boneCounter++;
+            BoneInfo bi;
+            bi.id = BoneID;
+            bi.BoneOffset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+            boneInfoMap[BoneName] = bi;
+        }
+        else
+        {
+            BoneID = boneInfoMap[BoneName].id;
+        }
+        assert (BoneID != -1);
+        auto weights = mesh->mBones[boneIndex]->mWeights;
+        int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+        for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+        {
+            int VertexID = weights[weightIndex].mVertexId;
+            float Weight = weights[weightIndex].mWeight;
+            SetVertexBoneData(vertices[VertexID], BoneID, Weight);
+        }
+    }
 }
