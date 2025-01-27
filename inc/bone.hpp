@@ -33,7 +33,7 @@ class Bone
         Bone(const std::string& name, int ID, const aiNodeAnim* channel);
         void Update(float animationTime);
         glm::mat4 GetLocalTransform();
-        std::string GetName();
+        std::string GetName() const;
         int GetBoneID();
         int GetPositionIndex(float animationTime);
         int GetRotationIndex(float animationTime);

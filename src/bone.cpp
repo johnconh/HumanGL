@@ -47,7 +47,7 @@ void Bone::Update(float animationTime)
 }
 
 glm::mat4 Bone::GetLocalTransform(){return mLocalTransform;}
-std::string Bone::GetName(){return mName;}
+std::string Bone::GetName() const {return mName;}
 int Bone::GetBoneID(){return mBoneID;}
 
 int Bone::GetPositionIndex(float animationTime)

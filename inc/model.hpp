@@ -32,8 +32,8 @@ class Model
 
         Model(string const &path);
         void Draw(Shader &shader);
-        auto& GetBoneInfoMap();
-        int& GetBoneCounter();
+        inline auto& GetBoneInfoMap() { return m_BoneInfoMap; }
+        inline int& GetBoneCounter() { return m_BoneCounter; }
 
     private:
         std::map <string, BoneInfo> m_BoneInfoMap;

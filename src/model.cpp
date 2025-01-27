@@ -162,16 +162,6 @@ unsigned int TextureFromFile(const char *path, const string &directory)
     return textureID;
 }
 
-auto& Model::GetBoneInfoMap()
-{
-    return m_BoneInfoMap;
-}
-
-int& Model::GetBoneCounter()
-{
-    return m_BoneCounter;
-}
-
 void Model::SetVertexBoneDataToDefault(Vertex& vertex)
 {
     for (int i = 0; i < MAX_BONES_INFLUENCE; i++)
