@@ -12,12 +12,12 @@ struct AssimpNodeData
     vector<AssimpNodeData> children;
 };
 
-class Animaton
+class Animation
 {
     public:
-        Animaton() = default;
-        Animaton(const string& animationPath, Model* model);
-        ~Animaton();
+        Animation() = default;
+        Animation(const string& animationPath, Model* model);
+        ~Animation();
         Bone* FindBone(const string& name);
         inline float GetTicksPerSecond() { return mTicksPerSecond; }
         inline float GetDuration() { return mDuration; }

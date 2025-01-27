@@ -1,6 +1,6 @@
 #include "../inc/animation.hpp"
 
-Animaton::Animaton(const string& animationPath, Model* model)
+Animation::Animation(const string& animationPath, Model* model)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
@@ -14,9 +14,9 @@ Animaton::Animaton(const string& animationPath, Model* model)
     ReadMissingBones(animation, *model);
 }
 
-Animaton::~Animaton(){}
+Animation::~Animation(){}
 
-Bone* Animaton::FindBone(const string& name)
+Bone* Animation::FindBone(const string& name)
 {
     auto iter = std::find_if(mBones.begin(), mBones.end(), [&](const Bone& Bone)
     {
@@ -26,7 +26,7 @@ Bone* Animaton::FindBone(const string& name)
     else return &(*iter);
 }
 
-void Animaton::ReadMissingBones(const aiAnimation* animation, Model& model)
+void Animation::ReadMissingBones(const aiAnimation* animation, Model& model)
 {
     int size = animation->mNumChannels;
     auto& boneInfoMap = model.GetBoneInfoMap();
@@ -46,7 +46,7 @@ void Animaton::ReadMissingBones(const aiAnimation* animation, Model& model)
     mBoneInfoMap = boneInfoMap;
 }
 
-void Animaton::ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src)
+void Animation::ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src)
 {
     assert(src);
     dest.name = src->mName.data;
