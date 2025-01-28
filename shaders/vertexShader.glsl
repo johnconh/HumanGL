@@ -27,10 +27,10 @@ void main()
             continue;
         if(aBoneIds[i] >= MAX_BONES)
         {
-            totalPosition = vec4(pos,1.0f);
+            totalPosition = vec4(aPos,1.0f);
             break;
         }
-        vec4 localPosition = finalBonesMatrices[aBoneIds[i]] * vec4(pos,1.0f);
+        vec4 localPosition = finalBonesMatrices[aBoneIds[i]] * vec4(aPos,1.0f);
         totalPosition += localPosition * aWeigths[i];
         vec3 localNormal = mat3 (finalBonesMatrices[aBoneIds[i]]) * aNormal;
     }

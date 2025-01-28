@@ -56,10 +56,9 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/objects/nanosuit/nanosuit.obj");
-    Animation ourAnimation("resources/objects/nanosuit/nanosuit.dae", &ourModel);
+    Model ourModel("resources/model/XBot.dae");
+    Animation ourAnimation("resources/animation/Walking.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
-
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -76,6 +75,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ourShader.use();
+
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
