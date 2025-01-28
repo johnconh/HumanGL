@@ -5,6 +5,7 @@
 #include "../inc/glm/gtc/type_ptr.hpp"
 #include "../inc/shader.hpp"
 #include "../inc/camera.hpp"
+#include "../inc/animator.hpp"
 #include "../inc/model.hpp"
 
 #include <iostream>
@@ -55,7 +56,10 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/objects/backpack/backpack.obj");
+    Model ourModel("resources/objects/nanosuit/nanosuit.obj");
+    Animation ourAnimation("resources/objects/nanosuit/nanosuit.dae", &ourModel);
+    Animator ourAnimator(&ourAnimation);
+
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -67,6 +71,7 @@ int main() {
         lastFrame = currentFrame;
 
         processInput(window);
+        ourAnimator.UpdateAnimation(deltaTime);
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -77,10 +82,15 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
+        auto finalBoneMatrices = ourAnimator.GetFinalBoneMatrices();
+        for (unsigned int i = 0; i < finalBoneMatrices.size(); i++)
+        {
+            ourShader.setMat4("finalBones[" + std::to_string(i) + "]", finalBoneMatrices[i]);
+        }
+        
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
         ourShader.setMat4("model", model);
-
         ourModel.Draw(ourShader);
 
         glfwSwapBuffers(window);
