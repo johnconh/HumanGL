@@ -78,15 +78,22 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     }
 
     aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
- 
+    
+    // aiString materialName;
+    // material->Get(AI_MATKEY_NAME, materialName);
+    // cout << "Material: " << materialName.C_Str() << std::endl;
     vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    //cout << "Diffuse Textures: " << diffuseMaps.size() << std::endl;
     vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    //cout << "Specular Textures: " << specularMaps.size() << std::endl;
     vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
     textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+    //cout << "Normal Textures: " << normalMaps.size() << std::endl;
     vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+    //cout << "Height Textures: " << heightMaps.size() << std::endl;
 
     // for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
     //     glm::vec3 pos = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);

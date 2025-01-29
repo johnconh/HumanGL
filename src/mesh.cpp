@@ -26,8 +26,9 @@ void Mesh::Draw(Shader &shader) {
         } else if (name == "texture_height") {
             number = to_string(heightNr++);
         }
-        glUniform1i(glGetUniformLocation(shader.id, (name + number).c_str()), i);
-        glBindTexture(GL_TEXTURE_2D, textures[i].id);
+        
+        CHECK_GL_ERROR(glUniform1i(glGetUniformLocation(shader.id, (name + number).c_str()), i));
+        CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, textures[i].id));
     }
     // draw mesh
     CHECK_GL_ERROR(glBindVertexArray(VAO));
