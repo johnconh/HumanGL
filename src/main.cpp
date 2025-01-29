@@ -56,8 +56,8 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/model/XBot.dae");
-    Animation ourAnimation("resources/animation/Walking.dae", &ourModel);
+    Model ourModel("resources/backpack/backpack.obj");
+    Animation ourAnimation("resources/model/akai_e_espiritu/akai_e_espiritu.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
 
     // draw in wireframe

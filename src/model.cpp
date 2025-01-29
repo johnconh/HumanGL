@@ -16,7 +16,7 @@ void Model::Draw(Shader &shader)
 void Model::loadModel(string const &path)
 {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -175,10 +175,10 @@ void Model::SetVertexBoneData(Vertex& vertex, int BoneID, float Weight)
 {
     for (int i = 0; i < MAX_BONES_INFLUENCE; ++i)
     {
-        if (vertex.weights[i] < 0.0)
+        if (vertex.boneIDs[i] < 0)
         {
-            vertex.boneIDs[i] = BoneID;
             vertex.weights[i] = Weight;
+            vertex.boneIDs[i] = BoneID;
             break;
         }
     }
@@ -192,22 +192,22 @@ void Model::ExtractBoneWeightForVertices(vector<Vertex>& vertices, aiMesh *mesh,
 
     for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
     {
-        int BoneID = -1;
+        int boneID = -1;
         string BoneName = mesh->mBones[boneIndex]->mName.C_Str();
         if (boneInfoMap.find(BoneName) == boneInfoMap.end())
         {
-            BoneID = boneCounter;
-            boneCounter++;
             BoneInfo bi;
-            bi.id = BoneID;
+            bi.id = boneCounter;
             bi.BoneOffset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
             boneInfoMap[BoneName] = bi;
+            boneID = boneCounter;
+            boneCounter++;
         }
         else
         {
-            BoneID = boneInfoMap[BoneName].id;
+            boneID = boneInfoMap[BoneName].id;
         }
-        assert (BoneID != -1);
+        assert (boneID != -1);
         auto weights = mesh->mBones[boneIndex]->mWeights;
         int numWeights = mesh->mBones[boneIndex]->mNumWeights;
 
@@ -215,7 +215,7 @@ void Model::ExtractBoneWeightForVertices(vector<Vertex>& vertices, aiMesh *mesh,
         {
             int VertexID = weights[weightIndex].mVertexId;
             float Weight = weights[weightIndex].mWeight;
-            SetVertexBoneData(vertices[VertexID], BoneID, Weight);
+            SetVertexBoneData(vertices[VertexID], boneID, Weight);
         }
     }
 }
