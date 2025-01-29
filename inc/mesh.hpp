@@ -4,6 +4,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "shader.hpp"
 #include <vector>
+#include "checkGLError.hpp"
 
 using namespace std;
 

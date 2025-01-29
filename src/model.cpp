@@ -16,7 +16,7 @@ void Model::Draw(Shader &shader)
 void Model::loadModel(string const &path)
 {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -39,6 +39,7 @@ void Model::processNode(aiNode *node, const aiScene *scene)
     {
         processNode(node->mChildren[i], scene);
     }
+
 }
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
@@ -87,6 +88,10 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
+    // for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+    //     glm::vec3 pos = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
+    //     std::cout << "Vértice " << i << ": (" << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+    // }
     ExtractBoneWeightForVertices(vertices, mesh, scene);
 
     return Mesh(vertices, indices, textures);
@@ -142,14 +147,14 @@ unsigned int TextureFromFile(const char *path, const string &directory)
         else if (nrComponents == 4)
             format = GL_RGBA;
 
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, textureID));
+        CHECK_GL_ERROR(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data));
+        CHECK_GL_ERROR (glGenerateMipmap(GL_TEXTURE_2D));
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+        CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+        CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
         stbi_image_free(data);
     }

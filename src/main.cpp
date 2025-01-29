@@ -56,12 +56,13 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/backpack/backpack.obj");
+    Model ourModel("resources/model/akai_e_espiritu/akai_e_espiritu.dae");
     Animation ourAnimation("resources/model/akai_e_espiritu/akai_e_espiritu.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
 
-    // draw in wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    //draw in wireframe
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while(!glfwWindowShouldClose(window))
     {
