@@ -56,8 +56,8 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/model/akai_e_espiritu/akai_e_espiritu.dae");
-    Animation ourAnimation("resources/model/akai_e_espiritu/akai_e_espiritu.dae", &ourModel);
+    Model ourModel("resources/model/akai/akai_e_espiritu.dae");
+    Animation ourAnimation("resources/animation/Walking.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
 
 
@@ -88,7 +88,7 @@ int main() {
     
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+        model = glm::scale(model, glm::vec3(.005f, .005f, .005f));
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
