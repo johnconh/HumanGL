@@ -56,8 +56,8 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/model/akai/akai_e_espiritu.dae");
-    Animation ourAnimation("resources/animation/Walking.dae", &ourModel);
+    Model ourModel("resources/model/akai/akai.dae");
+    Animation ourAnimation("resources/animation/Jump.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
 
 
@@ -84,11 +84,11 @@ int main() {
 
         auto finalBoneMatrices = ourAnimator.GetFinalBoneMatrices();
         for (unsigned int i = 0; i < finalBoneMatrices.size(); i++)
-            ourShader.setMat4("finalBones[" + std::to_string(i) + "]", finalBoneMatrices[i]);
-    
+            ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", finalBoneMatrices[i]);
+        
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f));
-        model = glm::scale(model, glm::vec3(.005f, .005f, .005f));
+        model = glm::translate(model, glm::vec3(0.0f, -0.9f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 

@@ -1,6 +1,6 @@
 NAME = HumanGL
 
-CXX = g++
+CXX = g++ -g
 CXXFLAGS = -std=c++17 -Wall -Werror -Wextra -Ilibs/glew/include -DGLEW_STATIC -I./inc -Ilibs/include
 LDFLAGS =-Llibs/glew/lib -lGLEW -lGLU -lglfw -lGL -lX11 -lXrandr -lpthread -lXi -ldl -Wl,-rpath=libs/glew/lib -Llibs/lib -lassimp -Wl,-rpath=libs/lib
 SRC_DIR = src

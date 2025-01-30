@@ -19,10 +19,10 @@ class Animation
         Animation(const string& animationPath, Model* model);
         ~Animation();
         Bone* FindBone(const string& name);
-        inline float GetTicksPerSecond() { return mTicksPerSecond; }
-        inline float GetDuration() { return mDuration; }
-        inline const AssimpNodeData& GetRootNode() { return mRootNode; }
-        inline const std::map<string, BoneInfo>& GetBoneIDMap() { return mBoneInfoMap; }
+        inline float GetTicksPerSecond() const { return mTicksPerSecond; }
+        inline float GetDuration() const { return mDuration; }
+        inline const AssimpNodeData& GetRootNode() const  { return mRootNode; }
+        inline const std::map<string, BoneInfo>& GetBoneIDMap() const { return mBoneInfoMap; }
     private:
         float mTicksPerSecond;
         float mDuration;

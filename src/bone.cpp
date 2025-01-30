@@ -46,11 +46,11 @@ void Bone::Update(float animationTime)
     mLocalTransform = translation * rotation * scale;
 }
 
-glm::mat4 Bone::GetLocalTransform(){return mLocalTransform;}
+glm::mat4 Bone::GetLocalTransform()const {return mLocalTransform;}
 std::string Bone::GetName() const {return mName;}
-int Bone::GetBoneID(){return mBoneID;}
+int Bone::GetBoneID() const {return mBoneID;}
 
-int Bone::GetPositionIndex(float animationTime)
+int Bone::GetPositionIndex(float animationTime) const
 {
     for (int i = 0; i < mNumPositionKeys - 1; i++)
     {
@@ -60,7 +60,7 @@ int Bone::GetPositionIndex(float animationTime)
     assert(0);
 }
 
-int Bone::GetRotationIndex(float animationTime)
+int Bone::GetRotationIndex(float animationTime) const
 {
     for (int i = 0; i < mNumRotationKeys - 1; i++)
     {
@@ -70,7 +70,7 @@ int Bone::GetRotationIndex(float animationTime)
     assert(0);
 }
 
-int Bone::GetScaleIndex(float animationTime)
+int Bone::GetScaleIndex(float animationTime) const
 {
     for (int i = 0; i < mNumScaleKeys - 1; i++)
     {
@@ -123,7 +123,7 @@ glm::mat4 Bone::InterpolateScale(float animationTime)
     return glm::scale(glm::mat4(1.0f), finalScale);
 }
 
-float Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)
+float Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime) const
 {
     float scaleFactor = 0.0f;
     float midWayLength = animationTime - lastTimeStamp;

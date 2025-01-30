@@ -51,7 +51,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
-        //SetVertexBoneDataToDefault(vertex);
+        SetVertexBoneDataToDefault(vertex);
         vertex.position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
         vertex.normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
 
@@ -177,7 +177,7 @@ void Model::SetVertexBoneData(Vertex& vertex, int BoneID, float Weight)
 {
     for (int i = 0; i < MAX_BONES_INFLUENCE; ++i)
     {
-        if (vertex.boneIDs[i] < 0)
+        if (vertex.weights[i] == 0)
         {
             vertex.weights[i] = Weight;
             vertex.boneIDs[i] = BoneID;
