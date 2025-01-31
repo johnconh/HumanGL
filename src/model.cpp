@@ -51,7 +51,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
-        SetVertexBoneDataToDefault(vertex);
+        //SetVertexBoneDataToDefault(vertex);
         vertex.position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
         vertex.normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
 

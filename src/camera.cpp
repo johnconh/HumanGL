@@ -1,7 +1,7 @@
 #include "../inc/camera.hpp"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-    : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+Camera::Camera(Vec3 position, Vec3 up, float yaw, float pitch)
+    : Front(Vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
     Position = position;
     WorldUp = up;
@@ -11,18 +11,18 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 }
 
 Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
-    : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+    : Front(Vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
-    Position = glm::vec3(posX, posY, posZ);
-    WorldUp = glm::vec3(upX, upY, upZ);
+    Position = Vec3(posX, posY, posZ);
+    WorldUp = Vec3(upX, upY, upZ);
     Yaw = yaw;
     Pitch = pitch;
     updateCameraVectors();
 }
 
-glm::mat4 Camera::GetViewMatrix()
+Matrix4 Camera::GetViewMatrix()
 {
-    return glm::lookAt(Position, Position + Front, Up);
+    return Matrix4::lookAt(Position, Position + Front, Up);
 }
 
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
@@ -68,11 +68,11 @@ void Camera::ProcessMouseScroll(float yoffset)
 
 void Camera::updateCameraVectors()
 {
-    glm::vec3 front;
-    front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-    front.y = sin(glm::radians(Pitch));
-    front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-    Front = glm::normalize(front);
-    Right = glm::normalize(glm::cross(Front, WorldUp));
-    Up = glm::normalize(glm::cross(Right, Front));
+    Vec3 front;
+    front.x() = cos(MathUtils::toRadians(Yaw)) * cos(MathUtils::toRadians(Pitch));
+    front.y() = sin(MathUtils::toRadians(Pitch));
+    front.z() = sin(MathUtils::toRadians(Yaw)) * cos(MathUtils::toRadians(Pitch));
+    Front = Vec3::normalize(front);
+    Right = Vec3::normalize(Vec3::cross(Front, WorldUp));
+    Up = Vec3::normalize(Vec3::cross(Right, Front));
 }

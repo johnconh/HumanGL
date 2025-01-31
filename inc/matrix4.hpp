@@ -2,6 +2,8 @@
 
 #include <array>
 #include <cmath>
+#include "vector.hpp"
+
 
 class Matrix4 {
     public:
@@ -16,8 +18,10 @@ class Matrix4 {
         static Matrix4 scale(float x, float y, float z);
         static Matrix4 rotate(float angle, float x, float y, float z);
         static Matrix4 identity();
+        static Matrix4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up);
         const float*  getPtr() const {return data.data();}
-    private:
-        static constexpr float PI = 3.14159265358979323846f; 
 };
+
+
+
 

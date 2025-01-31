@@ -8,6 +8,7 @@
 #include "../inc/animator.hpp"
 #include "../inc/model.hpp"
 
+
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -16,7 +17,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
 const unsigned int WIDTH = 800, HEIGHT = 600;
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(Vec3(0.0f, 0.0f, 3.0f));
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -57,8 +58,8 @@ int main() {
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
     Model ourModel("resources/model/akai/akai.dae");
-    Animation ourAnimation("resources/animation/Jump.dae", &ourModel);
-    Animator ourAnimator(&ourAnimation);
+    // Animation ourAnimation("resources/animation/Jump.dae", &ourModel);
+    // Animator ourAnimator(&ourAnimation);
 
 
     //draw in wireframe
@@ -71,24 +72,24 @@ int main() {
         lastFrame = currentFrame;
 
         processInput(window);
-        ourAnimator.UpdateAnimation(deltaTime); 
+        //ourAnimator.UpdateAnimation(deltaTime); 
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ourShader.use();
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
+        Matrix4 projection = Matrix4::perspective(camera.Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+        Matrix4 view = camera.GetViewMatrix();
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        auto finalBoneMatrices = ourAnimator.GetFinalBoneMatrices();
-        for (unsigned int i = 0; i < finalBoneMatrices.size(); i++)
-            ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", finalBoneMatrices[i]);
+        // auto finalBoneMatrices = ourAnimator.GetFinalBoneMatrices();
+        // for (unsigned int i = 0; i < finalBoneMatrices.size(); i++)
+        //     ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", finalBoneMatrices[i]);
         
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, -0.9f, 0.0f));
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        Matrix4 model = Matrix4::identity();
+        model = model * Matrix4::translate(0.0f, -0.9f, 0.0f);
+        model = model * Matrix4::scale(0.005f, 0.005f, 0.005f);
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
