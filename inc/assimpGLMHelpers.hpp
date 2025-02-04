@@ -5,26 +5,27 @@
 #include "../libs/include/assimp/matrix4x4.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
+#include "quaternion.hpp"
 
 class AssimpGLMHelpers
 {
     public:
-        static inline glm::mat4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from)
+        static inline Matrix4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from)
         {
-            glm::mat4 to;
-            to[0][0] = from.a1; to[0][1] = from.b1; to[0][2] = from.c1; to[0][3] = from.d1;
-            to[1][0] = from.a2; to[1][1] = from.b2; to[1][2] = from.c2; to[1][3] = from.d2;
-            to[2][0] = from.a3; to[2][1] = from.b3; to[2][2] = from.c3; to[2][3] = from.d3;
-            to[3][0] = from.a4; to[3][1] = from.b4; to[3][2] = from.c4; to[3][3] = from.d4;
-            return to;
-
+            std::array<float, 16> data = {
+                from.a1, from.b1, from.c1, from.d1,
+                from.a2, from.b2, from.c2, from.d2,
+                from.a3, from.b3, from.c3, from.d3,
+                from.a4, from.b4, from.c4, from.d4
+            };
+            return Matrix4(data);
         }
-        static inline glm::vec3 GetGLMVec(const aiVector3D& from)
+        static inline Vec3 GetGLMVec(const aiVector3D& from)
         {
-            return glm::vec3(from.x, from.y, from.z);
+            return Vec3(from.x, from.y, from.z);
         }
-        static inline glm::quat GetGLMQuat(const aiQuaternion& from)
+        static inline Quaternion GetGLMQuat(const aiQuaternion& from)
         {
-            return glm::quat(from.w, from.x, from.y, from.z);
+            return Quaternion(from.w, from.x, from.y, from.z);
         }
 };

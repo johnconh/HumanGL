@@ -51,19 +51,19 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
-        //SetVertexBoneDataToDefault(vertex);
+        SetVertexBoneDataToDefault(vertex);
         vertex.position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
         vertex.normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
 
         if (mesh->mTextureCoords[0])
         {
-            glm::vec2 vec;
-            vec.x = mesh->mTextureCoords[0][i].x;
-            vec.y = mesh->mTextureCoords[0][i].y;
+            Vec2 vec;
+            vec.x() = mesh->mTextureCoords[0][i].x;
+            vec.y() = mesh->mTextureCoords[0][i].y;
             vertex.texcoord = vec;
         }
         else
-            vertex.texcoord = glm::vec2(0.0f, 0.0f);
+            vertex.texcoord = Vec2(0.0f, 0.0f);
 
         vertices.push_back(vertex);
     }

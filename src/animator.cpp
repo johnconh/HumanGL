@@ -8,7 +8,7 @@ Animator::Animator(Animation* animation)
 
     for (int i = 0; i < 100; i++)
     {
-        mFinalBoneMatrices.push_back(glm::mat4(1.0f));
+        mFinalBoneMatrices.push_back(Matrix4());
     }
 }
 
@@ -19,7 +19,7 @@ void Animator::UpdateAnimation(float dt)
     {
         mCurrentTime += mCurrentAnimation->GetTicksPerSecond() * dt;
         mCurrentTime = fmod(mCurrentTime, mCurrentAnimation->GetDuration());
-        CalculateBoneTransform(&mCurrentAnimation->GetRootNode(), glm::mat4(1.0f));
+        CalculateBoneTransform(&mCurrentAnimation->GetRootNode(), Matrix4());
     }
 }
 
@@ -29,10 +29,10 @@ void Animator::PlayAnimation(Animation* pAnimation)
     mCurrentTime = 0.0f;
 }
 
-void Animator::CalculateBoneTransform(const AssimpNodeData* node, const glm::mat4& parentTransform)
+void Animator::CalculateBoneTransform(const AssimpNodeData* node, const Matrix4& parentTransform)
 {
     string nodeName = node->name;
-    glm::mat4 nodeTransformation = node->transformation;
+    Matrix4 nodeTransformation = node->transformation;
     Bone* Bone = mCurrentAnimation->FindBone(nodeName);
 
     if(Bone)
@@ -41,13 +41,13 @@ void Animator::CalculateBoneTransform(const AssimpNodeData* node, const glm::mat
         nodeTransformation = Bone->GetLocalTransform();
     }
 
-    glm::mat4 globalTransformation = parentTransform * nodeTransformation;
+    Matrix4 globalTransformation = parentTransform * nodeTransformation;
 
     auto BoneInfoMap = mCurrentAnimation->GetBoneIDMap();
     if(BoneInfoMap.find(nodeName) != BoneInfoMap.end())
     {
         int index = BoneInfoMap[nodeName].id;
-        glm::mat4 offset = BoneInfoMap[nodeName].BoneOffset;
+        Matrix4 offset = BoneInfoMap[nodeName].BoneOffset;
         mFinalBoneMatrices[index] = globalTransformation * offset;
     }
 

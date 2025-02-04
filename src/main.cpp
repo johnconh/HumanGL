@@ -58,8 +58,8 @@ int main() {
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
     Model ourModel("resources/model/akai/akai.dae");
-    // Animation ourAnimation("resources/animation/Jump.dae", &ourModel);
-    // Animator ourAnimator(&ourAnimation);
+    Animation ourAnimation("resources/animation/Jump.dae", &ourModel);
+    Animator ourAnimator(&ourAnimation);
 
 
     //draw in wireframe
@@ -72,7 +72,7 @@ int main() {
         lastFrame = currentFrame;
 
         processInput(window);
-        //ourAnimator.UpdateAnimation(deltaTime); 
+        ourAnimator.UpdateAnimation(deltaTime); 
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -83,9 +83,9 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        // auto finalBoneMatrices = ourAnimator.GetFinalBoneMatrices();
-        // for (unsigned int i = 0; i < finalBoneMatrices.size(); i++)
-        //     ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", finalBoneMatrices[i]);
+        auto finalBoneMatrices = ourAnimator.GetFinalBoneMatrices();
+        for (unsigned int i = 0; i < finalBoneMatrices.size(); i++)
+            ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", finalBoneMatrices[i]);
         
         Matrix4 model = Matrix4::identity();
         model = model * Matrix4::translate(0.0f, -0.9f, 0.0f);

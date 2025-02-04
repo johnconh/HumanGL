@@ -19,7 +19,7 @@ unsigned int TextureFromFile(const char *path, const string &directory);
 struct BoneInfo
 {
     int id;
-    glm::mat4 BoneOffset;
+    Matrix4 BoneOffset;
 };
 
 class Model

@@ -80,6 +80,16 @@ float Vec3::dot(const Vec3& a, const Vec3& b) {
 float Vec3::dot(const Vec3& other) const {
     return data[0] * other.data[0] + data[1] * other.data[1] + data[2] * other.data[2];
 }
+
+Vec3 Vec3::mix(const Vec3& start, const Vec3& end, float factor) {
+    float t = std::clamp(factor, 0.0f, 1.0f);
+    
+    return Vec3(
+        start.x() * (1.0f - t) + end.x() * t,
+        start.y() * (1.0f - t) + end.y() * t,
+        start.z() * (1.0f - t) + end.z() * t
+    );
+}
 // ========================================================================================= //
 
 //Vector 4
