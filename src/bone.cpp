@@ -108,7 +108,6 @@ Matrix4 Bone::InterpolateRotation(float animationTime)
     assert(NextRotationIndex < mNumRotationKeys);
     float scaleFactor = GetScaleFactor(mRotationKeys[RotationIndex].timeStamp, mRotationKeys[NextRotationIndex].timeStamp, animationTime);
     Quaternion finalRotation = Quaternion::slerp(mRotationKeys[RotationIndex].orientation, mRotationKeys[NextRotationIndex].orientation, scaleFactor).normalize();
-    Matrix4 rotationMatrix = finalRotation.toMatrix();
     return finalRotation.toMatrix();
 }
 
