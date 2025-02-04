@@ -10,7 +10,7 @@
 #include "../libs/include/assimp/Importer.hpp"
 #include "../libs/include/assimp/scene.h"
 #include "../libs/include/assimp/postprocess.h"
-#include "assimpGLMHelpers.hpp"
+#include "assimpHelpers.hpp"
 
 using namespace std;
 

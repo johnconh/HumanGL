@@ -12,7 +12,7 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
         aiVector3D aiPos = channel->mPositionKeys[i].mValue;
         float timeStamp = channel->mPositionKeys[i].mTime;
         KeyPosition key;
-        key.position = AssimpGLMHelpers::GetGLMVec(aiPos);
+        key.position = AssimpHelpers::GetGLMVec(aiPos);
         key.timeStamp = timeStamp;
         mPositionKeys.push_back(key);
     }
@@ -22,7 +22,7 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
         aiQuaternion aiRot = channel->mRotationKeys[i].mValue;
         float timeStamp = channel->mRotationKeys[i].mTime;
         KeyRotation key;
-        key.orientation = AssimpGLMHelpers::GetGLMQuat(aiRot);
+        key.orientation = AssimpHelpers::GetGLMQuat(aiRot);
         key.timeStamp = timeStamp;
         mRotationKeys.push_back(key);
     }
@@ -32,7 +32,7 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
         aiVector3D aiScale = channel->mScalingKeys[i].mValue;
         float timeStamp = channel->mScalingKeys[i].mTime;
         KeyScale key;
-        key.scale = AssimpGLMHelpers::GetGLMVec(aiScale);
+        key.scale = AssimpHelpers::GetGLMVec(aiScale);
         key.timeStamp = timeStamp;
         mScaleKeys.push_back(key);
     }

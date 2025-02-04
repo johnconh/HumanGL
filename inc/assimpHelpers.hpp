@@ -7,7 +7,7 @@
 #include "glm/gtc/quaternion.hpp"
 #include "quaternion.hpp"
 
-class AssimpGLMHelpers
+class AssimpHelpers
 {
     public:
         static inline Matrix4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from)

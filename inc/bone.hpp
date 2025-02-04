@@ -7,7 +7,7 @@
 #include "glm/glm.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
-#include "assimpGLMHelpers.hpp"
+#include "assimpHelpers.hpp"
 #include "vector.hpp"
 #include "quaternion.hpp"
 
