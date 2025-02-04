@@ -123,3 +123,16 @@ Matrix4 Matrix4::lookAt (const Vec3& eye, const Vec3& center, const Vec3& up) {
 
     return result;
 }
+
+std::ostream& operator<<(std::ostream& os, const Matrix4& m) {
+    os << "[\n";
+    for (int i = 0; i < 4; ++i) {
+        os << "  ";
+        for (int j = 0; j < 4; ++j) {
+            os << m.data[i * 4 + j] << " ";
+        }
+        os << "\n";
+    }
+    os << "]";
+    return os;
+}

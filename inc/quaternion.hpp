@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <iostream>
 #include "matrix4.hpp"
 
 class Quaternion {
@@ -23,4 +24,5 @@ class Quaternion {
         static Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float factor);
         float dot(const Quaternion& other) const;
         Quaternion normalize() const;
+        friend std::ostream& operator<<(std::ostream& os, const Quaternion& q);
 };

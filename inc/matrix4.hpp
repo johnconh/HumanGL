@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cmath>
+#include <iostream>
 #include "vector.hpp"
 
 
@@ -20,7 +21,8 @@ class Matrix4 {
         static Matrix4 identity();
         static Matrix4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up);
         const float*  getPtr() const {return data.data();}
-};
+        friend std::ostream& operator<<(std::ostream& os, const Matrix4& m);
+};  
 
 
 

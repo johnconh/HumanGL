@@ -1,4 +1,5 @@
 #include "../inc/bone.hpp"
+#include <iostream>
 
 Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
     : mName(name), mBoneID(ID), mLocalTransform()
@@ -36,6 +37,7 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
         key.timeStamp = timeStamp;
         mScaleKeys.push_back(key);
     }
+
 }
 
 void Bone::Update(float animationTime)
@@ -106,6 +108,7 @@ Matrix4 Bone::InterpolateRotation(float animationTime)
     assert(NextRotationIndex < mNumRotationKeys);
     float scaleFactor = GetScaleFactor(mRotationKeys[RotationIndex].timeStamp, mRotationKeys[NextRotationIndex].timeStamp, animationTime);
     Quaternion finalRotation = Quaternion::slerp(mRotationKeys[RotationIndex].orientation, mRotationKeys[NextRotationIndex].orientation, scaleFactor).normalize();
+    Matrix4 rotationMatrix = finalRotation.toMatrix();
     return finalRotation.toMatrix();
 }
 

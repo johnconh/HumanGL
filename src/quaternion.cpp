@@ -123,3 +123,8 @@ Matrix4 Quaternion::toMatrix() const {
         0.0f,                       0.0f,                    0.0f,                     1.0f
     });
 }
+
+std::ostream& operator<<(std::ostream& os, const Quaternion& q){
+    os << "x: " << q.x() << " y: " << q.y() << " z: " << q.z() << " w: " << q.w();
+    return os;
+}
