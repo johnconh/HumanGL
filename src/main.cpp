@@ -89,7 +89,7 @@ int main() {
         
         Matrix4 model = Matrix4::identity();
         model = model * Matrix4::translate(0.0f, -0.9f, 0.0f);
-        model = model * Matrix4::scale(0.005f, 0.005f, 0.005f);
+        model = model * Matrix4::scale(0.5f, 0.5f, 0.5f);
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 

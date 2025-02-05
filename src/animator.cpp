@@ -8,7 +8,7 @@ Animator::Animator(Animation* animation)
 
     for (int i = 0; i < 100; i++)
     {
-        mFinalBoneMatrices.push_back(Matrix4());
+        mFinalBoneMatrices.push_back(Matrix4::identity());
     }
 }
 
@@ -19,7 +19,7 @@ void Animator::UpdateAnimation(float dt)
     {
         mCurrentTime += mCurrentAnimation->GetTicksPerSecond() * dt;
         mCurrentTime = fmod(mCurrentTime, mCurrentAnimation->GetDuration());
-        CalculateBoneTransform(&mCurrentAnimation->GetRootNode(), Matrix4());
+        CalculateBoneTransform(&mCurrentAnimation->GetRootNode(), glm::mat4(1.0f));
     }
 }
 
@@ -29,10 +29,10 @@ void Animator::PlayAnimation(Animation* pAnimation)
     mCurrentTime = 0.0f;
 }
 
-void Animator::CalculateBoneTransform(const AssimpNodeData* node, const Matrix4& parentTransform)
+void Animator::CalculateBoneTransform(const AssimpNodeData* node, const glm::mat4& parentTransform)
 {
     string nodeName = node->name;
-    Matrix4 nodeTransformation = node->transformation;
+    glm::mat4 nodeTransformation = node->transformation;
     Bone* Bone = mCurrentAnimation->FindBone(nodeName);
 
     if(Bone)
@@ -41,14 +41,17 @@ void Animator::CalculateBoneTransform(const AssimpNodeData* node, const Matrix4&
         nodeTransformation = Bone->GetLocalTransform();
     }
 
-    Matrix4 globalTransformation = parentTransform * nodeTransformation;
+    glm::mat4 globalTransformation = parentTransform * nodeTransformation;
 
     auto BoneInfoMap = mCurrentAnimation->GetBoneIDMap();
     if(BoneInfoMap.find(nodeName) != BoneInfoMap.end())
     {
         int index = BoneInfoMap[nodeName].id;
-        Matrix4 offset = BoneInfoMap[nodeName].BoneOffset;
-        mFinalBoneMatrices[index] = globalTransformation * offset;
+        glm::mat4 offset = BoneInfoMap[nodeName].BoneOffset;
+        glm::mat4 boneTransform = globalTransformation * offset;
+        Matrix4 boneMatrix;
+        boneMatrix.fromGLM(boneTransform);
+        mFinalBoneMatrices[index] = boneMatrix;
     }
 
     for(int i = 0; i < node->childrenCount; i++)

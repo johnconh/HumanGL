@@ -50,7 +50,10 @@ void Animation::ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src)
 {
     assert(src);
     dest.name = src->mName.data;
-    dest.transformation = AssimpHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
+    glm::mat4 transGLM = AssimpHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
+    Matrix4 trans;
+    trans.fromGLM(transGLM);
+    dest.transformation = trans;
     dest.childrenCount = src->mNumChildren;
 
     for (unsigned int i = 0; i < src->mNumChildren; i++)

@@ -3,6 +3,7 @@
 #include <array>
 #include <cmath>
 #include <algorithm>
+#include "../inc/glm/glm.hpp"
 
 class Vec2
 {
@@ -52,6 +53,7 @@ class Vec3
         float dot (const Vec3& other) const;
         static float dot(const Vec3& a, const Vec3& b);
         static Vec3 mix(const Vec3& start, const Vec3& end, float factor);
+        void fromGLM(const glm::vec3& glmVec);
 };
 
 class Vec4

@@ -6,7 +6,7 @@
 
 struct AssimpNodeData
 {
-    Matrix4 transformation;
+    glm::mat4 transformation;
     string name;
     int childrenCount;
     vector<AssimpNodeData> children;

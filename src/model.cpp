@@ -52,8 +52,14 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     {
         Vertex vertex;
         SetVertexBoneDataToDefault(vertex);
-        vertex.position = AssimpHelpers::GetGLMVec(mesh->mVertices[i]);
-        vertex.normal = AssimpHelpers::GetGLMVec(mesh->mNormals[i]);
+        glm::vec3 positionGLM = AssimpHelpers::GetGLMVec(mesh->mVertices[i]);
+        Vec3 pos;
+        pos.fromGLM(positionGLM);
+        vertex.position = pos;
+        glm::vec3 normalGLM = AssimpHelpers::GetGLMVec(mesh->mNormals[i]);
+        Vec3 nor;
+        nor.fromGLM(normalGLM);
+        vertex.normal = nor;
 
         if (mesh->mTextureCoords[0])
         {
@@ -200,7 +206,7 @@ void Model::ExtractBoneWeightForVertices(vector<Vertex>& vertices, aiMesh *mesh,
         {
             BoneInfo bi;
             bi.id = boneCounter;
-            bi.BoneOffset = AssimpHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+            bi.BoneOffset = AssimpHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);;
             boneInfoMap[BoneName] = bi;
             boneID = boneCounter;
             boneCounter++;

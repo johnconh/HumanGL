@@ -124,6 +124,14 @@ Matrix4 Matrix4::lookAt (const Vec3& eye, const Vec3& center, const Vec3& up) {
     return result;
 }
 
+void Matrix4::fromGLM(const glm::mat4& m) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            data[i * 4 + j] = m[i][j];
+        }
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix4& m) {
     os << "[\n";
     for (int i = 0; i < 4; ++i) {

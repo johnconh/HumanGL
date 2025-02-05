@@ -42,13 +42,13 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
 
 void Bone::Update(float animationTime)
 {
-    Matrix4 translation = InterpolatePosition(animationTime);
-    Matrix4 rotation = InterpolateRotation(animationTime);
-    Matrix4 scale = InterpolateScale(animationTime);
+    glm::mat4 translation = InterpolatePosition(animationTime);
+    glm::mat4 rotation = InterpolateRotation(animationTime);
+    glm::mat4 scale = InterpolateScale(animationTime);
     mLocalTransform = translation * rotation * scale;
 }
 
-Matrix4 Bone::GetLocalTransform()const {return mLocalTransform;}
+glm::mat4 Bone::GetLocalTransform()const {return mLocalTransform;}
 std::string Bone::GetName() const {return mName;}
 int Bone::GetBoneID() const {return mBoneID;}
 
@@ -82,46 +82,47 @@ int Bone::GetScaleIndex(float animationTime) const
     assert(0);
 }
 
-Matrix4 Bone::InterpolatePosition(float animationTime)
+glm::mat4 Bone::InterpolatePosition(float animationTime)
 {
     if (1 == mNumPositionKeys)
-        return  Matrix4::translate(mPositionKeys[0].position.x(), mPositionKeys[0].position.y(), mPositionKeys[0].position.z());
+        return glm::translate(glm::mat4(1.0f), mPositionKeys[0].position);
+
 
     int PositionIndex = GetPositionIndex(animationTime);
     int NextPositionIndex = (PositionIndex + 1);
     assert(NextPositionIndex < mNumPositionKeys);
     float scaleFactor = GetScaleFactor(mPositionKeys[PositionIndex].timeStamp, mPositionKeys[NextPositionIndex].timeStamp, animationTime);
-    Vec3 finalPosition = Vec3::mix(mPositionKeys[PositionIndex].position, mPositionKeys[NextPositionIndex].position, scaleFactor);
-    return Matrix4::translate(finalPosition.x(), finalPosition.y(), finalPosition.z());
+    glm::vec3 finalPosition = glm::mix(mPositionKeys[PositionIndex].position, mPositionKeys[NextPositionIndex].position, scaleFactor);
+    return glm::translate(glm::mat4(1.0f) ,finalPosition);
 }
 
-Matrix4 Bone::InterpolateRotation(float animationTime)
+glm::mat4 Bone::InterpolateRotation(float animationTime)
 {
     if (1 == mNumRotationKeys)
     {
-        auto rotation = mRotationKeys[0].orientation.normalize();
-        return rotation.toMatrix();
+        auto rotation = glm::normalize(mRotationKeys[0].orientation);
+        return glm::toMat4(rotation);
     }
-
     int RotationIndex = GetRotationIndex(animationTime);
     int NextRotationIndex = (RotationIndex + 1);
     assert(NextRotationIndex < mNumRotationKeys);
     float scaleFactor = GetScaleFactor(mRotationKeys[RotationIndex].timeStamp, mRotationKeys[NextRotationIndex].timeStamp, animationTime);
-    Quaternion finalRotation = Quaternion::slerp(mRotationKeys[RotationIndex].orientation, mRotationKeys[NextRotationIndex].orientation, scaleFactor).normalize();
-    return finalRotation.toMatrix();
+    glm::quat finalRotation = glm::slerp(mRotationKeys[RotationIndex].orientation, mRotationKeys[NextRotationIndex].orientation, scaleFactor);
+    finalRotation = glm::normalize(finalRotation);
+    return glm::toMat4(finalRotation);
 }
 
-Matrix4 Bone::InterpolateScale(float animationTime)
+glm::mat4 Bone::InterpolateScale(float animationTime)
 {
     if (1 == mNumScaleKeys)
-        return Matrix4::scale(mScaleKeys[0].scale.x(), mScaleKeys[0].scale.y(), mScaleKeys[0].scale.z());
+        return glm::scale(glm::mat4(1.0f), mScaleKeys[0].scale);
 
     int ScaleIndex = GetScaleIndex(animationTime);
     int NextScaleIndex = (ScaleIndex + 1);
     assert(NextScaleIndex < mNumScaleKeys);
     float scaleFactor = GetScaleFactor(mScaleKeys[ScaleIndex].timeStamp, mScaleKeys[NextScaleIndex].timeStamp, animationTime);
-    Vec3 finalScale = Vec3::mix(mScaleKeys[ScaleIndex].scale, mScaleKeys[NextScaleIndex].scale, scaleFactor);
-    return Matrix4::scale(finalScale.x(), finalScale.y(), finalScale.z());
+    glm::vec3 finalScale = glm::mix(mScaleKeys[ScaleIndex].scale, mScaleKeys[NextScaleIndex].scale, scaleFactor);
+    return glm::scale(glm::mat4(1.0f), finalScale);
 }
 
 float Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime) const

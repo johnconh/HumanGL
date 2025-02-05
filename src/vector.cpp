@@ -90,6 +90,12 @@ Vec3 Vec3::mix(const Vec3& start, const Vec3& end, float factor) {
         start.z() * (1.0f - t) + end.z() * t
     );
 }
+
+void Vec3::fromGLM(const glm::vec3& glmVec) {
+    x() = glmVec.x;
+    y() = glmVec.y;
+    z() = glmVec.z;
+}
 // ========================================================================================= //
 
 //Vector 4

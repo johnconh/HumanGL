@@ -13,19 +13,19 @@
 
 struct KeyPosition
 {
-    Vec3 position;
+    glm::vec3 position;
     float timeStamp;
 };
 
 struct KeyRotation
 {
-    Quaternion orientation;
+    glm::quat orientation;
     float timeStamp;
 };
 
 struct KeyScale
 {
-    Vec3 scale;
+    glm::vec3 scale;
     float timeStamp;
 };
 
@@ -34,7 +34,7 @@ class Bone
     public:
         Bone(const std::string& name, int ID, const aiNodeAnim* channel);
         void Update(float animationTime);
-        Matrix4 GetLocalTransform() const;
+        glm::mat4 GetLocalTransform() const;
         std::string GetName() const;
         int GetBoneID() const;
         int GetPositionIndex(float animationTime) const;
@@ -43,7 +43,7 @@ class Bone
     private:
         std::string mName;
         int mBoneID;
-        Matrix4 mLocalTransform;
+        glm::mat4 mLocalTransform;
         int mNumPositionKeys;
         int mNumRotationKeys;
         int mNumScaleKeys;
@@ -51,8 +51,8 @@ class Bone
         std::vector<KeyRotation> mRotationKeys;
         std::vector<KeyScale> mScaleKeys;
 
-        Matrix4 InterpolatePosition(float animationTime);
-        Matrix4 InterpolateRotation(float animationTime);
-        Matrix4 InterpolateScale(float animationTime);
+        glm::mat4 InterpolatePosition(float animationTime);
+        glm::mat4 InterpolateRotation(float animationTime);
+        glm::mat4 InterpolateScale(float animationTime);
         float GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime) const;
 };
