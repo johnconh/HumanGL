@@ -1,8 +1,5 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "../inc/glm/glm.hpp"
-#include "../inc/glm/gtc/matrix_transform.hpp"
-#include "../inc/glm/gtc/type_ptr.hpp"
 #include "../inc/shader.hpp"
 #include "../inc/camera.hpp"
 #include "../inc/animator.hpp"

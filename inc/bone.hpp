@@ -8,8 +8,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
 #include "assimpHelpers.hpp"
-#include "vector.hpp"
-#include "quaternion.hpp"
+#include "matrix4.hpp"
 
 struct KeyPosition
 {

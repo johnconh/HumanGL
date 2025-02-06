@@ -3,9 +3,8 @@
 #include "../libs/include/assimp/quaternion.h"
 #include "../libs/include/assimp/vector3.h"
 #include "../libs/include/assimp/matrix4x4.h"
-#include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
-#include "quaternion.hpp"
+#include "matrix4.hpp"
 
 class AssimpHelpers
 {
