@@ -4,8 +4,6 @@
 #include "../inc/camera.hpp"
 #include "../inc/animator.hpp"
 #include "../inc/model.hpp"
-
-
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -55,9 +53,8 @@ int main() {
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
     Model ourModel("resources/model/akai/akai.dae");
-    Animation ourAnimation("resources/animation/Jump.dae", &ourModel);
+    Animation ourAnimation("resources/animation/Idle.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
-
 
     //draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
