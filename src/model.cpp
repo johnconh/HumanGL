@@ -52,14 +52,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     {
         Vertex vertex;
         SetVertexBoneDataToDefault(vertex);
-        glm::vec3 positionGLM = AssimpHelpers::GetGLMVec(mesh->mVertices[i]);
-        Vec3 pos;
-        pos.fromGLM(positionGLM);
-        vertex.position = pos;
-        glm::vec3 normalGLM = AssimpHelpers::GetGLMVec(mesh->mNormals[i]);
-        Vec3 nor;
-        nor.fromGLM(normalGLM);
-        vertex.normal = nor;
+        vertex.position = AssimpHelpers::GetVec3(mesh->mVertices[i]);
+        vertex.normal = AssimpHelpers::GetVec3(mesh->mNormals[i]);
 
         if (mesh->mTextureCoords[0])
         {
