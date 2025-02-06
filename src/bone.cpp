@@ -13,7 +13,7 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
         aiVector3D aiPos = channel->mPositionKeys[i].mValue;
         float timeStamp = channel->mPositionKeys[i].mTime;
         KeyPosition key;
-        key.position = AssimpHelpers::GetGLMVec(aiPos);
+        key.position = AssimpHelpers::GetVec3(aiPos);
         key.timeStamp = timeStamp;
         mPositionKeys.push_back(key);
     }
@@ -33,7 +33,7 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
         aiVector3D aiScale = channel->mScalingKeys[i].mValue;
         float timeStamp = channel->mScalingKeys[i].mTime;
         KeyScale key;
-        key.scale = AssimpHelpers::GetGLMVec(aiScale);
+        key.scale = AssimpHelpers::GetVec3(aiScale);
         key.timeStamp = timeStamp;
         mScaleKeys.push_back(key);
     }
@@ -42,13 +42,15 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
 
 void Bone::Update(float animationTime)
 {
-    glm::mat4 translation = InterpolatePosition(animationTime);
-    glm::mat4 rotation = InterpolateRotation(animationTime);
-    glm::mat4 scale = InterpolateScale(animationTime);
+    Matrix4 translation = InterpolatePosition(animationTime);
+    glm::mat4 rotationGLM = InterpolateRotation(animationTime);
+    Matrix4 rotation;
+    rotation.fromGLM(rotationGLM);
+    Matrix4 scale = InterpolateScale(animationTime);
     mLocalTransform = translation * rotation * scale;
 }
 
-glm::mat4 Bone::GetLocalTransform()const {return mLocalTransform;}
+Matrix4 Bone::GetLocalTransform()const {return mLocalTransform;}
 std::string Bone::GetName() const {return mName;}
 int Bone::GetBoneID() const {return mBoneID;}
 
@@ -82,18 +84,18 @@ int Bone::GetScaleIndex(float animationTime) const
     assert(0);
 }
 
-glm::mat4 Bone::InterpolatePosition(float animationTime)
+Matrix4 Bone::InterpolatePosition(float animationTime)
 {
     if (1 == mNumPositionKeys)
-        return glm::translate(glm::mat4(1.0f), mPositionKeys[0].position);
+        return Matrix4::translate(mPositionKeys[0].position.x(), mPositionKeys[0].position.y(), mPositionKeys[0].position.z()); 
 
 
     int PositionIndex = GetPositionIndex(animationTime);
     int NextPositionIndex = (PositionIndex + 1);
     assert(NextPositionIndex < mNumPositionKeys);
     float scaleFactor = GetScaleFactor(mPositionKeys[PositionIndex].timeStamp, mPositionKeys[NextPositionIndex].timeStamp, animationTime);
-    glm::vec3 finalPosition = glm::mix(mPositionKeys[PositionIndex].position, mPositionKeys[NextPositionIndex].position, scaleFactor);
-    return glm::translate(glm::mat4(1.0f) ,finalPosition);
+    Vec3 finalPosition = Vec3::mix(mPositionKeys[PositionIndex].position, mPositionKeys[NextPositionIndex].position, scaleFactor);
+    return Matrix4::translate(finalPosition.x(), finalPosition.y(), finalPosition.z());
 }
 
 glm::mat4 Bone::InterpolateRotation(float animationTime)
@@ -112,17 +114,17 @@ glm::mat4 Bone::InterpolateRotation(float animationTime)
     return glm::toMat4(finalRotation);
 }
 
-glm::mat4 Bone::InterpolateScale(float animationTime)
+Matrix4 Bone::InterpolateScale(float animationTime)
 {
     if (1 == mNumScaleKeys)
-        return glm::scale(glm::mat4(1.0f), mScaleKeys[0].scale);
+        return Matrix4::scale(mScaleKeys[0].scale.x(), mScaleKeys[0].scale.y(), mScaleKeys[0].scale.z());
 
     int ScaleIndex = GetScaleIndex(animationTime);
     int NextScaleIndex = (ScaleIndex + 1);
     assert(NextScaleIndex < mNumScaleKeys);
     float scaleFactor = GetScaleFactor(mScaleKeys[ScaleIndex].timeStamp, mScaleKeys[NextScaleIndex].timeStamp, animationTime);
-    glm::vec3 finalScale = glm::mix(mScaleKeys[ScaleIndex].scale, mScaleKeys[NextScaleIndex].scale, scaleFactor);
-    return glm::scale(glm::mat4(1.0f), finalScale);
+    Vec3 finalScale = Vec3::mix(mScaleKeys[ScaleIndex].scale, mScaleKeys[NextScaleIndex].scale, scaleFactor);
+    return Matrix4::scale(finalScale.x(), finalScale.y(), finalScale.z());
 }
 
 float Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime) const

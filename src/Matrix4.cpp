@@ -8,13 +8,13 @@ Matrix4::Matrix4(const std::array<float, 16>& values) : data(values) {}
 
 Matrix4 Matrix4::operator*(const Matrix4& other) const {
     std::array<float, 16> result;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
+    for (int col = 0; col < 4; col++) {
+        for (int row = 0; row < 4; row++) {
             float sum = 0.0f;
             for (int k = 0; k < 4; k++) {
-                sum += data[i * 4 + k] * other.data[k * 4 + j];
+                sum += data[k * 4 + row] * other.data[col * 4 + k];
             }
-            result[i * 4 + j] = sum;
+            result[col * 4 + row] = sum;
         }
     }
     return Matrix4(result);

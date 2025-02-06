@@ -206,7 +206,7 @@ void Model::ExtractBoneWeightForVertices(vector<Vertex>& vertices, aiMesh *mesh,
         {
             BoneInfo bi;
             bi.id = boneCounter;
-            bi.BoneOffset = AssimpHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);;
+            bi.BoneOffset = AssimpHelpers::ConvertMatrixToMatrix4Format(mesh->mBones[boneIndex]->mOffsetMatrix);;
             boneInfoMap[BoneName] = bi;
             boneID = boneCounter;
             boneCounter++;

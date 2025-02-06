@@ -10,19 +10,25 @@
 class AssimpHelpers
 {
     public:
-        static inline glm::mat4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from)
-        {
-            glm::mat4 to;
-            to[0][0] = from.a1; to[1][0] = from.a2; to[2][0] = from.a3; to[3][0] = from.a4;
-            to[0][1] = from.b1; to[1][1] = from.b2; to[2][1] = from.b3; to[3][1] = from.b4;
-            to[0][2] = from.c1; to[1][2] = from.c2; to[2][2] = from.c3; to[3][2] = from.c4;
-            to[0][3] = from.d1; to[1][3] = from.d2; to[2][3] = from.d3; to[3][3] = from.d4;
+        static inline Matrix4 ConvertMatrixToMatrix4Format(const aiMatrix4x4& from) {
+            Matrix4 to;
+            to[0] = from.a1; to[4] = from.a2; to[8] = from.a3; to[12] = from.a4;
+            to[1] = from.b1; to[5] = from.b2; to[9] = from.b3; to[13] = from.b4;
+            to[2] = from.c1; to[6] = from.c2; to[10] = from.c3; to[14] = from.c4;
+            to[3] = from.d1; to[7] = from.d2; to[11] = from.d3; to[15] = from.d4;
             return to;
         }
+
         static inline glm::vec3 GetGLMVec(const aiVector3D& from)
         {
             return glm::vec3(from.x, from.y, from.z);
         }
+
+        static inline Vec3 GetVec3(const aiVector3D& from)
+        {
+            return Vec3(from.x, from.y, from.z);
+        }
+
         static inline glm::quat GetGLMQuat(const aiQuaternion& from)
         {
             return glm::quat(from.w, from.x, from.y, from.z);
