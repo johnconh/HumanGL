@@ -50,6 +50,7 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
+
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
     Model ourModel("resources/model/akai/akai.dae");
