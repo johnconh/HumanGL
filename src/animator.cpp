@@ -15,7 +15,7 @@ Animator::Animator(Animation* animation)
 void Animator::UpdateAnimation(float dt)
 {
     mDeltaTime = dt;
-    if(mCurrentAnimation)
+    if(mCurrentAnimation && !isPause)
     {
         mCurrentTime += mCurrentAnimation->GetTicksPerSecond() * dt;
         mCurrentTime = fmod(mCurrentTime, mCurrentAnimation->GetDuration());
@@ -55,3 +55,24 @@ void Animator::CalculateBoneTransform(const AssimpNodeData* node, const Matrix4&
         CalculateBoneTransform(&node->children[i], globalTransformation);
 }
 
+void Animator::setCurrentTime(float time)
+{
+   mCurrentTime = fmod(time, mCurrentAnimation->GetDuration());
+   
+   CalculateBoneTransform(&mCurrentAnimation->GetRootNode(), Matrix4::identity());
+}
+
+float Animator::getDuration() const
+{
+    return mCurrentAnimation ? mCurrentAnimation->GetDuration() : 0.0f;
+}
+
+float Animator::getTicksPerSecond() const
+{
+    return mCurrentAnimation ? mCurrentAnimation->GetTicksPerSecond() : 0.0f;
+}
+
+void Animator::setPause(bool pause)
+{
+    isPause = pause;
+}

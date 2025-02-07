@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <filesystem>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -10,7 +11,7 @@
 class ImGuiManager {
     public:
         static void init(GLFWwindow* window);
-        static void render(Animator& animator, Model& model);
+        static void render(Animator& animator, Model& model, float deltaTime);
         static void shutdown();
     private:
         static std::vector<std::string> getAnimationFiles(const std::string& path);

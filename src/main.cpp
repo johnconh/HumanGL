@@ -2,8 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "../inc/shader.hpp"
 #include "../inc/camera.hpp"
-#include "../inc/animator.hpp"
-#include "../inc/model.hpp"
+#include "../inc/imguiManager.hpp"
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -46,6 +45,8 @@ int main() {
         exit(1);
     }
 
+    ImGuiManager::init(window);
+
     stbi_set_flip_vertically_on_load(true);
 
     glEnable(GL_DEPTH_TEST);
@@ -71,6 +72,8 @@ int main() {
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        ImGuiManager::render(ourAnimator, ourModel, deltaTime);
+
         ourShader.use();
 
         Matrix4 projection = Matrix4::perspective(camera.Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
@@ -92,6 +95,7 @@ int main() {
         glfwPollEvents();
     }
 
+    ImGuiManager::shutdown();
     glfwTerminate();
     return 0;
 }
