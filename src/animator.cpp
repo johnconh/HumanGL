@@ -58,7 +58,6 @@ void Animator::CalculateBoneTransform(const AssimpNodeData* node, const Matrix4&
 void Animator::setCurrentTime(float time)
 {
    mCurrentTime = fmod(time, mCurrentAnimation->GetDuration());
-   
    CalculateBoneTransform(&mCurrentAnimation->GetRootNode(), Matrix4::identity());
 }
 
