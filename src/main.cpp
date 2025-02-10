@@ -54,7 +54,7 @@ int main() {
 
     Shader ourShader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 
-    Model ourModel("resources/model/akai/akai.dae");
+    Model ourModel("resources/model/Vanguard/Vanguard.dae");
     Animation ourAnimation("resources/animation/Idle.dae", &ourModel);
     Animator ourAnimator(&ourAnimation);
 
