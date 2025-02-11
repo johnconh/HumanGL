@@ -39,6 +39,11 @@ void Animator::CalculateBoneTransform(const AssimpNodeData* node, const Matrix4&
     {
         Bone->Update(mCurrentTime);
         nodeTransformation = Bone->GetLocalTransform();
+        // if(nodeName == "mixamorig_Head")
+        // {
+        //     Matrix4 scaleMatrix = Matrix4::scale(2.0f, 2.0f, 2.0f);
+        //     nodeTransformation = nodeTransformation * scaleMatrix;
+        // }
     }
 
     Matrix4 globalTransformation = parentTransform * nodeTransformation;

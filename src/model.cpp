@@ -1,5 +1,24 @@
 #include "../inc/model.hpp"
 
+
+void PrintNodeNames(const aiNode* node) {
+    if (node == nullptr) return;
+
+    // Imprimir el nombre del nodo actual
+    std::cout << "Node name: " << node->mName.C_Str() << std::endl;
+
+    // Llamar recursivamente para imprimir los nombres de los hijos
+    for (unsigned int i = 0; i < node->mNumChildren; ++i) {
+        PrintNodeNames(node->mChildren[i]);
+    }
+}
+
+void PrintAllNodeNames(const aiScene* scene) {
+    if (scene == nullptr || scene->mRootNode == nullptr) return;
+
+    PrintNodeNames(scene->mRootNode);
+}
+
 Model::Model(string const &path)
 {
     loadModel(path);
@@ -23,6 +42,7 @@ void Model::loadModel(string const &path)
         cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
         return;
     }
+    //PrintAllNodeNames(scene);
     directory = path.substr(0, path.find_last_of('/'));
     processNode(scene->mRootNode, scene);
 
