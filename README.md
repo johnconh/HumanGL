@@ -35,3 +35,7 @@ Este proyecto es una implementación de animación esquelética utilizando **Ope
 - [Assimp](https://github.com/assimp/assimp) e [Imgui](https://github.com/ocornut/imgui), los repositorios de dos de las tecnologías que he usado.
 
 ## Imagenes
+![1](img/humangl1.png)
+![2](img/humangl2.png)
+![3](img/humangl3.png)
+![4](img/humangl4.png)
