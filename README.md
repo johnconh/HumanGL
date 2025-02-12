@@ -19,7 +19,7 @@ Este proyecto es una implementación de animación esquelética utilizando **Ope
 ## Controles
 
 - A, S, D, W, mueve la cámara.
-- Girar la cámara con el ratón manteniendo pulsado el botón derecho del ratón.
+- Girar la cámara con el ratón manteniendo pulsado el botón derecho del ratón y la rueda del raton para el zoom.
 -  Esc para cerrar la ventana.
   
 ## Requisitos
