@@ -10,11 +10,11 @@ Este proyecto es una implementación de animación esquelética utilizando **Ope
 - **ImGui** para interfaz del usuario.
 
 ## Características principales
-  ✅ Sistema de animación esquelética con interpolación entre frames.
-  ✅ Implementación propia de matrices y vectores.
-  ✅ Carga de modelos 3D con Assimp (.dae).
-  ✅ Renderizado con OpenGL y shaders personalizados.
-  ✅ Interfaz gráfica con ImGui que permite: Seleccionar y pausar animaciones. Controlar el tiempo de la animación con un slider.
+  - ✅ Sistema de animación esquelética con interpolación entre frames.
+  - ✅ Implementación propia de matrices y vectores.
+  - ✅ Carga de modelos 3D con Assimp (.dae).
+  - ✅ Renderizado con OpenGL y shaders personalizados.
+  - ✅ Interfaz gráfica con ImGui que permite: Seleccionar y pausar animaciones. Controlar el tiempo de la animación con un slider.
 
 ## Controles
 
